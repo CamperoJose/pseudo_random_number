@@ -29,7 +29,7 @@ class WelcomePage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 80.0, bottom: 20.0),
                   child: Center(
                     child: Text(
-                      'Generador de Números Pseudoaleatorios v0.0',
+                      'Generador de Números Pseudoaleatorios v0.0 CD',
                       style: TextStyle(
                         fontSize: 42.0,
                         fontWeight: FontWeight.w900,

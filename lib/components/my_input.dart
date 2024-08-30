@@ -4,7 +4,7 @@ class MyInput extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final String hintText;
-  final String imagePath;
+  final String imageUrl; // Cambiado de imagePath a imageUrl
   final TextInputType keyboardType;
   final double? width; // Parámetro opcional para el ancho
 
@@ -13,7 +13,7 @@ class MyInput extends StatelessWidget {
     required this.controller,
     required this.labelText,
     this.hintText = '',
-    required this.imagePath,
+    required this.imageUrl, // Cambiado de imagePath a imageUrl
     this.keyboardType = TextInputType.number,
     this.width, // Inicialización del nuevo parámetro
   }) : super(key: key);
@@ -49,8 +49,8 @@ class MyInput extends StatelessWidget {
                 bottomLeft: Radius.circular(15.0),
               ),
             ),
-            child: Image.asset(
-              imagePath,
+            child: Image.network( // Cambiado a Image.network para cargar la imagen desde una URL
+              imageUrl,
               width: 40.0,
               height: 40.0,
               fit: BoxFit.cover,
