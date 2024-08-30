@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_random_number/views/method_one.dart';
+import 'package:pseudo_random_number/views/method_two.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
@@ -80,7 +81,7 @@ class WelcomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Columna izquierda
-                              Expanded(
+                              const Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -104,13 +105,13 @@ class WelcomePage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 40.0),
+                              const SizedBox(width: 40.0),
                               // Columna derecha con botones animados
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Escoja un método',
                                       style: TextStyle(
                                         fontSize: 26.0,
@@ -134,7 +135,10 @@ class WelcomePage extends StatelessWidget {
                                     AnimatedButton(
                                       text: 'Método 2',
                                       onPressed: () {
-                                        // Acción para Método 2
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => MethodTwoPage()),
+                                        );
                                       },
                                     ),
                                     SizedBox(height: 10.0),
