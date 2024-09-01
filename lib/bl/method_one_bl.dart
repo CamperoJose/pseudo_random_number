@@ -44,7 +44,7 @@ class MethodOneBL {
         'yi': yi,
         'operation': operation,
         'x1': x1,
-        'ri': ri.toStringAsFixed(digits - 1),
+        'ri': ri.toStringAsFixed(digits),
       });
 
       // Actualizar la semilla para la siguiente iteración

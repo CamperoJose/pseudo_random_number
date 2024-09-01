@@ -104,7 +104,7 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Algoritmo de los Cuadrados Medios',
+          'Algoritmo de los Productos Mínimos',
           style: TextStyle(color: Color.fromARGB(255, 225, 224, 209)),
         ),
         backgroundColor: const Color(0xFF232635),

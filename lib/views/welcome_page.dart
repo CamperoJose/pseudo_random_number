@@ -133,7 +133,7 @@ class WelcomePage extends StatelessWidget {
                                     ),
                                     SizedBox(height: 10.0),
                                     AnimatedButton(
-                                      text: 'Productos Medios',
+                                      text: 'Productos Minimos',
                                       onPressed: () {
                                         Navigator.push(
                                           context,
@@ -142,8 +142,9 @@ class WelcomePage extends StatelessWidget {
                                       },
                                     ),
                                     SizedBox(height: 10.0),
+                                    Text("metodos congruenciales"),
                                     AnimatedButton(
-                                      text: 'Método 3',
+                                      text: 'Algorítmo Congruencial Lineal',
                                       onPressed: () {
                                         // Acción para Método 3
                                       },
