@@ -4,13 +4,14 @@ import 'package:pseudo_random_number/components/custom_pop_up.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
 import 'package:pseudo_random_number/components/custom_table.dart';
-import 'package:pseudo_random_number/components/message_display.dart'; // Importa el nuevo componente
+import 'package:pseudo_random_number/components/message_display.dart'; 
 import 'package:pseudo_random_number/utils/file_download.dart';
 
 class MethodOnePage extends StatefulWidget {
   const MethodOnePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MethodOnePageState createState() => _MethodOnePageState();
 }
 

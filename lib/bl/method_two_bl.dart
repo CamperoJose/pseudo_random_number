@@ -2,10 +2,13 @@ import 'dart:math';
 
 class MethodTwoBL {
   Map<String, dynamic> generateNumbers(
-      int seed, int seed2, int count, int digits) {
+      int seed, int seed2, int count) {
     List<Map<String, dynamic>> results = [];
     int currentSeed = seed;
     int currentSeed2 = seed2;
+
+    // digitos de semilla:
+    int digits = seed.toString().length;
 
     // Generar todos los números
     for (int i = 0; i < count; i++) {

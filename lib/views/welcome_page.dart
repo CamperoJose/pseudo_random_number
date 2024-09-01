@@ -16,7 +16,7 @@ class WelcomePage extends StatelessWidget {
           children: [
             // Fondo con imagen
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage('https://res.cloudinary.com/deaodcmae/image/upload/v1724986931/jwfefm8l1qbswsdvx4va.png'),
                   fit: BoxFit.cover,
@@ -122,7 +122,7 @@ class WelcomePage extends StatelessWidget {
                                     SizedBox(height: 20.0),
                                     // Botones de métodos con animación de escala
                                     AnimatedButton(
-                                      text: 'Método 1',
+                                      text: 'Cuadrados Medios',
                                       onPressed: () {
                                         //ir a la página del método 1:
                                         Navigator.push(
@@ -133,7 +133,7 @@ class WelcomePage extends StatelessWidget {
                                     ),
                                     SizedBox(height: 10.0),
                                     AnimatedButton(
-                                      text: 'Método 2',
+                                      text: 'Productos Medios',
                                       onPressed: () {
                                         Navigator.push(
                                           context,
