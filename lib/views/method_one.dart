@@ -82,6 +82,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -96,11 +98,11 @@ class _MethodOnePageState extends State<MethodOnePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Inputs Semilla y Cantidad
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: isWide ? 1 : 2,
                   child: MyInput(
                     controller: _seedController,
                     labelText: 'Semilla',
@@ -109,9 +111,9 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                const SizedBox(width: 10.0),
+                if (isWide) const SizedBox(width: 10.0),
                 Expanded(
-                  flex: 1,
+                  flex: isWide ? 1 : 2,
                   child: MyInput(
                     controller: _countController,
                     labelText: 'Cantidad',
@@ -120,43 +122,87 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
+                if (isWide) const Spacer(), // Espacio vacío en pantallas anchas
               ],
             ),
             const SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: MyButton(
-                    onPressed: _generateNumbers,
-                    labelText: 'Generar',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
-                    buttonColor: const Color(0xFF232635),
-                    textColor: Colors.white,
+            // Botones
+            if (isWide)
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: MyButton(
+                      onPressed: _generateNumbers,
+                      labelText: 'Generar',
+                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                      buttonColor: const Color(0xFF232635),
+                      textColor: Colors.white,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10.0),
-                Expanded(
-                  child: MyButton(
-                    onPressed: _downloadCSVWeb,
-                    labelText: 'Descargar CSV',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
-                    buttonColor: const Color.fromARGB(255, 162, 27, 25),
-                    textColor: Colors.white,
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    flex: 1,
+                    child: MyButton(
+                      onPressed: _downloadCSVWeb,
+                      labelText: 'Descargar CSV',
+                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                      buttonColor: const Color.fromARGB(255, 162, 27, 25),
+                      textColor: Colors.white,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10.0),
-                Expanded(
-                  child: MyButton(
-                    onPressed: _downloadExcelWeb,
-                    labelText: 'Descargar Excel',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
-                    buttonColor: const Color.fromARGB(255, 13, 122, 55),
-                    textColor: Colors.white,
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    flex: 1,
+                    child: MyButton(
+                      onPressed: _downloadExcelWeb,
+                      labelText: 'Descargar Excel',
+                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                      buttonColor: const Color.fromARGB(255, 13, 122, 55),
+                      textColor: Colors.white,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              )
+            else
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyButton(
+                      onPressed: _generateNumbers,
+                      labelText: 'Generar',
+                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                      buttonColor: const Color(0xFF232635),
+                      textColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MyButton(
+                          onPressed: _downloadCSVWeb,
+                          labelText: 'Descargar CSV',
+                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                          buttonColor: const Color.fromARGB(255, 162, 27, 25),
+                          textColor: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(width: 10.0),
+                      Expanded(
+                        child: MyButton(
+                          onPressed: _downloadExcelWeb,
+                          labelText: 'Descargar Excel',
+                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                          buttonColor: const Color.fromARGB(255, 13, 122, 55),
+                          textColor: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             const SizedBox(height: 20.0),
             // Mostrar MessageDisplay solo después de generar números
             if (_results.isNotEmpty && _message.isNotEmpty)
