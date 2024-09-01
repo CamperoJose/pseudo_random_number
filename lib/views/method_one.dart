@@ -1,15 +1,15 @@
-import 'dart:convert'; // Para codificar el contenido en base64
-import 'dart:html' as html; // Para manejar el DOM y descargar archivos
 import 'package:flutter/material.dart';
-import 'package:input_quantity/input_quantity.dart';
 import 'package:pseudo_random_number/bl/method_one_bl.dart';
+import 'package:pseudo_random_number/components/custom_pop_up.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
-import 'package:pseudo_random_number/components/custom_table.dart'; // Importa el nuevo componente
-import 'package:csv/csv.dart';
-import 'package:excel/excel.dart';
+import 'package:pseudo_random_number/components/custom_table.dart';
+import 'package:pseudo_random_number/components/message_display.dart'; // Importa el nuevo componente
+import 'package:pseudo_random_number/utils/file_download.dart';
 
 class MethodOnePage extends StatefulWidget {
+  const MethodOnePage({super.key});
+
   @override
   _MethodOnePageState createState() => _MethodOnePageState();
 }
@@ -17,93 +17,87 @@ class MethodOnePage extends StatefulWidget {
 class _MethodOnePageState extends State<MethodOnePage> {
   final TextEditingController _seedController = TextEditingController();
   final TextEditingController _countController = TextEditingController();
-  final TextEditingController _digitsController = TextEditingController(text: '4');
+  final TextEditingController _fileNameController = TextEditingController();
 
   List<Map<String, dynamic>> _results = [];
   String _message = '';
-  String _messageType = 'success'; // Valor por defecto
+  String _messageType = 'success';
 
   void _generateNumbers() {
     final int seed = int.tryParse(_seedController.text) ?? 0;
     final int count = int.tryParse(_countController.text) ?? 0;
-    final int digits = int.tryParse(_digitsController.text) ?? 4;
 
-    if (seed > 0 && count > 0 && digits >= 2) {
+    if (seed > 0 && count > 0 && seed.toString().length >= 2) {
       setState(() {
-        var result = MethodOneBL().generateNumbers(seed, count, digits);
+        var result = MethodOneBL().generateNumbers(seed, count);
         _results = result['results'];
         _message = result['message'];
         _messageType = result['message_type'];
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor, ingrese valores válidos')),
+        const SnackBar(content: Text('Por favor, ingrese valores válidos')),
       );
     }
   }
 
+  void _showFileNamePopup(VoidCallback onConfirm) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomPopup(
+          title: 'Guardar Archivo',
+          message: 'Ingrese el nombre del archivo',
+          isInput: true,
+          controller: _fileNameController,
+          iconPath: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+          backgroundColor: const Color(0xFF232635),
+          iconColor: Colors.white,
+          onConfirm: () {
+            onConfirm();
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
   void _downloadCSVWeb() {
-    List<List<dynamic>> rows = [
-      ['i', 'Yi', 'Operación', 'X1', 'Ri'],
-      ..._results.map((result) => [
-        result['i'],
-        result['yi'],
-        result['operation'],
-        result['x1'],
-        result['ri']
-      ])
-    ];
-
-    String csv = const ListToCsvConverter().convert(rows);
-    final bytes = utf8.encode(csv);
-    final base64Str = base64.encode(bytes);
-
-    final anchor = html.AnchorElement(href: 'data:text/csv;base64,$base64Str')
-      ..setAttribute('download', 'datos.csv')
-      ..click();
+    _showFileNamePopup(() {
+      final fileName = _fileNameController.text.isNotEmpty
+          ? _fileNameController.text
+          : 'datos';
+      downloadCSVWeb(_results, fileName);
+    });
   }
 
   void _downloadExcelWeb() {
-    final excel = Excel.createExcel();
-    final sheet = excel['Sheet1'];
-
-    sheet.appendRow(['i', 'Yi', 'Operación', 'X1', 'Ri']);
-    _results.forEach((result) {
-      sheet.appendRow([
-        result['i'],
-        result['yi'],
-        result['operation'],
-        result['x1'],
-        result['ri']
-      ]);
+    _showFileNamePopup(() {
+      final fileName = _fileNameController.text.isNotEmpty
+          ? _fileNameController.text
+          : 'datos';
+      downloadExcelWeb(_results, fileName);
     });
-
-    final bytes = excel.encode();
-    final base64Str = base64.encode(bytes!);
-
-    final anchor = html.AnchorElement(href: 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,$base64Str')
-      ..setAttribute('download', 'datos.xlsx')
-      ..click();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Algoritmo de los Cuadrados Medios',
           style: TextStyle(color: Color.fromARGB(255, 225, 224, 209)),
         ),
         backgroundColor: const Color(0xFF232635),
-        iconTheme: IconThemeData(color: Color.fromARGB(255, 225, 224, 209)),
+        iconTheme: const IconThemeData(color: Color.fromARGB(255, 225, 224, 209)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 1,
@@ -115,7 +109,7 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                SizedBox(width: 10.0),
+                const SizedBox(width: 10.0),
                 Expanded(
                   flex: 1,
                   child: MyInput(
@@ -126,103 +120,53 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                SizedBox(width: 30.0),
-                Container(
-                  width: 140.0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Número de dígitos:',
-                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 4.0),
-                      InputQty(
-                        initVal: int.tryParse(_digitsController.text) ?? 4,
-                        minVal: 2,
-                        maxVal: 10,
-                        onQtyChanged: (value) {
-                          _digitsController.text = value.toString();
-                        },
-                        decoration: QtyDecorationProps(
-                          isBordered: false,
-                          minusBtn: Icon(Icons.remove, color: Colors.red),
-                          plusBtn: Icon(Icons.add, color: Colors.green),
-                          width: 20,
-                        ),
-                        qtyFormProps: QtyFormProps(
-                          enableTyping: true,
-                        ),
-                      ),
-                    ],
+              ],
+            ),
+            const SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: MyButton(
+                    onPressed: _generateNumbers,
+                    labelText: 'Generar',
+                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                    buttonColor: const Color(0xFF232635),
+                    textColor: Colors.white,
                   ),
                 ),
-                SizedBox(width: 10.0),
+                const SizedBox(width: 10.0),
                 Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: MyButton(
-                      onPressed: () {
-                        _generateNumbers();
-                      },
-                      labelText: 'Generar',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
-                      buttonColor: Color(0xFF232635),
-                      textColor: Colors.white,
-                    ),
+                  child: MyButton(
+                    onPressed: _downloadCSVWeb,
+                    labelText: 'Descargar CSV',
+                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                    buttonColor: const Color.fromARGB(255, 162, 27, 25),
+                    textColor: Colors.white,
                   ),
                 ),
-                SizedBox(width: 10.0),
+                const SizedBox(width: 10.0),
                 Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: MyButton(
-                      onPressed: () {
-                        _downloadCSVWeb();
-                      },
-                      labelText: 'Descargar CSV',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
-                      buttonColor: Color.fromARGB(255, 162, 27, 25),
-                      textColor: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: MyButton(
-                      onPressed: () {
-                        _downloadExcelWeb();
-                      },
-                      labelText: 'Descargar Excel',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
-                      buttonColor: Color.fromARGB(255, 13, 122, 55),
-                      textColor: Colors.white,
-                    ),
+                  child: MyButton(
+                    onPressed: _downloadExcelWeb,
+                    labelText: 'Descargar Excel',
+                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                    buttonColor: const Color.fromARGB(255, 13, 122, 55),
+                    textColor: Colors.white,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20.0),
-            // Mostrar el mensaje arriba de la tabla
-            if (_message.isNotEmpty)
-              Container(
-                padding: EdgeInsets.all(10.0),
-                color: _messageType == 'error' ? Colors.red[100] : Colors.green[100],
-                child: Text(
-                  _message,
-                  style: TextStyle(
-                    color: _messageType == 'error' ? Colors.red[700] : Colors.green[700],
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+            const SizedBox(height: 20.0),
+            // Mostrar MessageDisplay solo después de generar números
+            if (_results.isNotEmpty && _message.isNotEmpty)
+              Center(
+                child: MessageDisplay(
+                  message: _message,
+                  messageType: _messageType,
                 ),
               ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Expanded(
               child: Center(
                 child: CustomTable(results: _results), // Usando el nuevo componente CustomTable

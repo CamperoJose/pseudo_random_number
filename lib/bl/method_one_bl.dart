@@ -1,9 +1,12 @@
 import 'dart:math';
 
 class MethodOneBL {
-  Map<String, dynamic> generateNumbers(int seed, int count, int digits) {
+  Map<String, dynamic> generateNumbers(int seed, int count) {
     List<Map<String, dynamic>> results = [];
     int currentSeed = seed;
+
+    //canttidad de digitos de la semilla:
+    int digits = seed.toString().length;
 
     // Generar todos los números
     for (int i = 0; i < count; i++) {

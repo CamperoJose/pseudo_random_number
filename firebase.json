@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "random-generator",
     "public": "build/web",
     "ignore": [
       "firebase.json",

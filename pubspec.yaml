@@ -41,6 +41,7 @@ dependencies:
   excel: ^2.0.8
   path_provider: ^2.0.8
   permission_handler: ^10.2.0
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
