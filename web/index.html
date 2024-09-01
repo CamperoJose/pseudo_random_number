@@ -32,6 +32,20 @@
   <title>pseudo_random_number</title>
   <link rel="manifest" href="manifest.json">
 
+  <!-- Estilos para la pantalla de presentación -->
+  <style>
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://res.cloudinary.com/deaodcmae/image/upload/v1724986931/jwfefm8l1qbswsdvx4va.png') no-repeat center center;
+      background-size: cover;
+      z-index: 9999;
+    }
+  </style>
+
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
@@ -40,6 +54,9 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+  <!-- Pantalla de presentación -->
+  <div id="splash-screen"></div>
+
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -54,17 +71,20 @@
         }
       });
     });
+
+    // Eliminar la pantalla de presentación después de cargar la aplicación
+    window.addEventListener('load', function() {
+      document.getElementById('splash-screen').style.display = 'none';
+    });
   </script>
 
+  <!-- Código Firebase -->
   <script type="module">
-    // Import the functions you need from the SDKs you need
+    // Importa las funciones que necesites
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCByRWYHlTZidPCun2imi9BGoHXgYth7Xk",
       authDomain: "random-e116d.firebaseapp.com",
@@ -75,10 +95,9 @@
       measurementId: "G-3XKF4V04SZ"
     };
 
-    // Initialize Firebase
+    // Inicializar Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
   </script>
-
 </body>
 </html>

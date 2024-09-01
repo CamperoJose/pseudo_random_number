@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_random_number/views/method_one.dart';
+import 'package:pseudo_random_number/views/method_three.dart';
 import 'package:pseudo_random_number/views/method_two.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -146,7 +147,10 @@ class WelcomePage extends StatelessWidget {
                                     AnimatedButton(
                                       text: 'Algorítmo Congruencial Lineal',
                                       onPressed: () {
-                                        // Acción para Método 3
+                                        Navigator.push(context, 
+                                        
+                                        MaterialPageRoute(builder: (context) => MethodThreePage()),
+                                        );
                                       },
                                     ),
                                   ],
