@@ -9,8 +9,8 @@ class WelcomePage extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
-          fontFamily: 'Lato',
-        ),
+              fontFamily: 'Lato',
+            ),
       ),
       home: Scaffold(
         body: Stack(
@@ -39,7 +39,7 @@ class WelcomePage extends StatelessWidget {
                           padding: EdgeInsets.only(top: 80.0, bottom: 20.0),
                           child: Center(
                             child: Text(
-                              'Generador de Números Pseudoaleatorios v0.0 CD',
+                              'Generador de Números Pseudoaleatorios v1.0.1',
                               style: TextStyle(
                                 fontSize: 42.0,
                                 fontWeight: FontWeight.w900,
@@ -62,7 +62,6 @@ class WelcomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         Container(
                           padding: EdgeInsets.all(25.0),
                           margin: EdgeInsets.symmetric(horizontal: 30.0),
@@ -81,10 +80,6 @@ class WelcomePage extends StatelessWidget {
                           child: Column(
                             children: [
                               SizedBox(height: 20.0),
-                              // Sección de información adicional
-
-
-                              // Columnas de contenido con iconos
                               if (constraints.maxWidth > 600)
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,116 +175,63 @@ class WelcomePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20.0),
-        // Botones de métodos con animación de escala
-        AnimatedButton(
-          text: 'Cuadrados Medios',
-          onPressed: () {
-            //ir a la página del método 1:
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MethodOnePage()),
-            );
-          },
+        _buildButton(
+          context,
+          'Cuadrados Medios',
+          MethodOnePage(),
+          Color.fromARGB(255, 9, 116, 135), // Gris Oscuro
         ),
         const SizedBox(height: 10.0),
-        AnimatedButton(
-          text: 'Productos Mínimos',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MethodTwoPage()),
-            );
-          },
+        _buildButton(
+          context,
+          'Productos Mínimos',
+          MethodTwoPage(),
+          Color.fromARGB(255, 107, 9, 102), // Gris Azul
         ),
         const SizedBox(height: 10.0),
-        AnimatedButton(
-          text: 'Algoritmo Congruencial Lineal',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MethodThreePage()),
-            );
-          },
+        _buildButton(
+          context,
+          'Algoritmo Congruencial Lineal',
+          MethodThreePage(),
+          Color.fromARGB(255, 15, 103, 47), // Gris Azul Claro
         ),
         const SizedBox(height: 10.0),
-        AnimatedButton(
-          text: 'Algoritmo Congruencial Multiplicativo',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MethodThreePage()),
-            );
-          },
+        _buildButton(
+          context,
+          'Algoritmo Congruencial Multiplicativo',
+          MethodThreePage(),
+          Color.fromARGB(255, 147, 14, 14), // Gris Medio
         ),
       ],
     );
   }
-}
 
-// Clase para botones animados
-class AnimatedButton extends StatefulWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const AnimatedButton({
-    required this.text,
-    required this.onPressed,
-  });
-
-  @override
-  _AnimatedButtonState createState() => _AnimatedButtonState();
-}
-
-class _AnimatedButtonState extends State<AnimatedButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => _controller.forward(),
-      onTapUp: (_) {
-        _controller.reverse();
-        widget.onPressed();
+  Widget _buildButton(BuildContext context, String text, Widget page, Color color) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
       },
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueAccent,
-            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-          ),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.7, // Botón con ancho del 70% del ancho de la pantalla
+        child: Center(
           child: Text(
-            widget.text,
+            text,
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
-          onPressed: widget.onPressed,
         ),
       ),
     );
