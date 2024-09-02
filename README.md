@@ -1,1 +1,3 @@
-## access: https://random-e116d.web.app/
+## 🎲 try it out!
+
+👉 [https://random-generator.web.app/](https://random-generator.web.app/)

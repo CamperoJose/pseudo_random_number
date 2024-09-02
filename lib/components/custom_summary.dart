@@ -18,8 +18,8 @@ class MySummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      padding: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+      padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFFF5F5DC), Color(0xFFEDEBE0)],
@@ -39,15 +39,16 @@ class MySummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Resumen de valores",
+            "Resumen de Valores",
             style: TextStyle(
               color: Color(0xFF232635),
               fontWeight: FontWeight.bold,
-              fontSize: 18.0,
+              fontSize: 16.0,
             ),
           ),
-          const SizedBox(height: 12.0),
+          const SizedBox(height: 8.0),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Column(
@@ -60,7 +61,7 @@ class MySummary extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 16.0),
+              const SizedBox(width: 12.0),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +92,7 @@ class MySummary extends StatelessWidget {
                 style: const TextStyle(
                   color: Color(0xFF444444),
                   fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                 ),
               ),
               const SizedBox(width: 8.0),
@@ -100,7 +101,7 @@ class MySummary extends StatelessWidget {
                 style: const TextStyle(
                   color: Color(0xFF333333),
                   fontWeight: FontWeight.w500,
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                 ),
               ),
             ],
@@ -126,7 +127,7 @@ class MySummary extends StatelessWidget {
                 style: const TextStyle(
                   color: Color(0xFF444444),
                   fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                 ),
               ),
               const SizedBox(width: 8.0),
@@ -137,7 +138,7 @@ class MySummary extends StatelessWidget {
                       ? (isPrimeNumber ? Colors.green : Colors.red)
                       : Color(0xFF333333),
                   fontWeight: FontWeight.w500,
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                 ),
               ),
               const SizedBox(width: 8.0),
@@ -147,7 +148,7 @@ class MySummary extends StatelessWidget {
                   style: TextStyle(
                     color: isPrimeNumber ? Colors.green : Colors.red,
                     fontStyle: FontStyle.italic,
-                    fontSize: 14.0,
+                    fontSize: 12.0,
                   ),
                 ),
             ],
@@ -184,7 +185,7 @@ class MySummary extends StatelessWidget {
                 style: const TextStyle(
                   color: Color(0xFF444444),
                   fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                 ),
               ),
               const SizedBox(width: 8.0),
@@ -193,7 +194,7 @@ class MySummary extends StatelessWidget {
                 style: const TextStyle(
                   color: Color(0xFF333333),
                   fontWeight: FontWeight.w500,
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                 ),
               ),
             ],
