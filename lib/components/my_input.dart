@@ -4,24 +4,26 @@ class MyInput extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final String hintText;
-  final String imageUrl; // Cambiado de imagePath a imageUrl
+  final String imageUrl; 
   final TextInputType keyboardType;
-  final double? width; // Parámetro opcional para el ancho
+  final double? width;
+  final ValueChanged<String>? onChanged; 
 
   const MyInput({
     Key? key,
     required this.controller,
     required this.labelText,
     this.hintText = '',
-    required this.imageUrl, // Cambiado de imagePath a imageUrl
+    required this.imageUrl,
     this.keyboardType = TextInputType.number,
-    this.width, // Inicialización del nuevo parámetro
+    this.width,
+    this.onChanged, 
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width, // Aplica el ancho si se proporciona
+      width: width,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -43,13 +45,13 @@ class MyInput extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: Color(0xFF232635), // Color oscuro para la imagen
+              color: Color(0xFF232635),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15.0),
                 bottomLeft: Radius.circular(15.0),
               ),
             ),
-            child: Image.network( // Cambiado a Image.network para cargar la imagen desde una URL
+            child: Image.network(
               imageUrl,
               width: 40.0,
               height: 40.0,
@@ -63,7 +65,7 @@ class MyInput extends StatelessWidget {
                 controller: controller,
                 keyboardType: keyboardType,
                 style: TextStyle(
-                  color: Color(0xFF333333), // Tono oscuro pero suave para el texto
+                  color: Color(0xFF333333),
                   fontWeight: FontWeight.w500,
                   fontSize: 16.0,
                 ),
@@ -71,11 +73,11 @@ class MyInput extends StatelessWidget {
                   labelText: labelText,
                   hintText: hintText,
                   labelStyle: TextStyle(
-                    color: Color(0xFF444444), // Tono medio para la etiqueta
+                    color: Color(0xFF444444),
                     fontSize: 16.0,
                   ),
                   hintStyle: TextStyle(
-                    color: Color(0xFF666666), // Tono más claro para el hint
+                    color: Color(0xFF666666),
                     fontSize: 14.0,
                   ),
                   border: InputBorder.none,
@@ -83,6 +85,7 @@ class MyInput extends StatelessWidget {
                 ),
                 cursorColor: Color(0xFF232635),
                 cursorWidth: 2.0,
+                onChanged: onChanged, 
               ),
             ),
           ),

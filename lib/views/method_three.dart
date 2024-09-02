@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pseudo_random_number/bl/method_three_bl.dart';
+import 'package:pseudo_random_number/components/custom_summary.dart';
 import 'package:pseudo_random_number/components/custom_table.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
@@ -20,6 +21,11 @@ class _MethodThreePageState extends State<MethodThreePage> {
   final TextEditingController _kController = TextEditingController();
   final TextEditingController _cController = TextEditingController();
   final TextEditingController _fileNameController = TextEditingController();
+
+  final seedNotifier = ValueNotifier<String>('');
+  final quantityNotifier = ValueNotifier<String>('');
+  final constantKNotifier = ValueNotifier<String>('');
+  final moduloPNotifier = ValueNotifier<String>('');
 
   List<Map<String, dynamic>> _results = [];
   String _message = '';
@@ -120,61 +126,193 @@ class _MethodThreePageState extends State<MethodThreePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Inputs Semilla, Cantidad, k, c
+            // Inputs y nuevo recuadro
+            if (isWide) ...[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: MyInput(
+                                controller: _seedController,
+                                labelText: 'Valor de X0',
+                                hintText: 'Ingrese valor de X0',
+                                imageUrl:
+                                    'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/upi9pr42qflrdjooufbo.png',
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) =>
+                                    seedNotifier.value = value,
+                              ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                              child: MyInput(
+                                controller: _countController,
+                                labelText: 'Cantidad',
+                                hintText: 'Ingrese la cantidad',
+                                imageUrl:
+                                    'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) =>
+                                    quantityNotifier.value = value,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 3.0),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: MyInput(
+                                controller: _kController,
+                                labelText: 'Constante k',
+                                hintText: 'Ingrese el valor de k',
+                                imageUrl:
+                                    'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/sdeqbahu0f7e9jlkvorr.png',
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) =>
+                                    constantKNotifier.value = value,
+                              ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                              child: MyInput(
+                                controller: _cController,
+                                labelText: 'Constante c',
+                                hintText: 'Ingrese el valor de c',
+                                imageUrl:
+                                    'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/wkob3ymmaazdtagv6ky1.png',
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) =>
+                                    moduloPNotifier.value = value,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 20.0),
+                  Expanded(
+                    flex: 1,
+                    child: MySummary(
+                      seed: seedNotifier,
+                      quantity: quantityNotifier,
+                      constantK: constantKNotifier,
+                      moduloP: moduloPNotifier,
+                    ),
+                  ),
+                ],
+              ),
+            ] else ...[
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MyInput(
+                          controller: _seedController,
+                          labelText: 'Valor de X0',
+                          hintText: 'Ingrese valor de X0',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/upi9pr42qflrdjooufbo.png',
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => seedNotifier.value = value,
+                        ),
+                      ),
+                      const SizedBox(width: 10.0),
+                      Expanded(
+                        child: MyInput(
+                          controller: _countController,
+                          labelText: 'Cantidad',
+                          hintText: 'Ingrese la cantidad',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => quantityNotifier.value = value,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 3.0),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MyInput(
+                          controller: _kController,
+                          labelText: 'Constante k',
+                          hintText: 'Ingrese el valor de k',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/sdeqbahu0f7e9jlkvorr.png',
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => constantKNotifier.value = value,
+                        ),
+                      ),
+                      const SizedBox(width: 10.0),
+                      Expanded(
+                        child: MyInput(
+                          controller: _cController,
+                          labelText: 'Constante c',
+                          hintText: 'Ingrese el valor de c',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/wkob3ymmaazdtagv6ky1.png',
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => moduloPNotifier.value = value,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 3.0),
+                  MySummary(
+                      seed: seedNotifier,
+                      quantity: quantityNotifier,
+                      constantK: constantKNotifier,
+                      moduloP: moduloPNotifier,
+                    ),
+                ],
+              ),
+            ],
+            const SizedBox(height: 5.0),
+            // Botones
             if (isWide) ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: MyInput(
-                      controller: _seedController,
-                      labelText: 'Valor de X0',
-                      hintText: 'Ingrese valor de X0',
+                    child: MyButton(
+                      onPressed: _generateNumbers,
+                      labelText: 'Generar',
                       imageUrl:
-                          'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/upi9pr42qflrdjooufbo.png',
-                      keyboardType: TextInputType.number,
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                      buttonColor: const Color(0xFF232635),
+                      textColor: Colors.white,
                     ),
                   ),
-                  const SizedBox(width: 10.0),
+                  const SizedBox(width: 20.0),
                   Expanded(
-                    flex: 1,
-                    child: MyInput(
-                      controller: _countController,
-                      labelText: 'Cantidad',
-                      hintText: 'Ingrese la cantidad',
+                    child: MyButton(
+                      onPressed: _downloadCSVWeb,
+                      labelText: 'Descargar CSV',
                       imageUrl:
-                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
-                      keyboardType: TextInputType.number,
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                      buttonColor: const Color.fromARGB(255, 162, 27, 25),
+                      textColor: Colors.white,
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                  const SizedBox(width: 20.0),
                   Expanded(
-                    flex: 1,
-                    child: MyInput(
-                      controller: _kController,
-                      labelText: 'Constante k',
-                      hintText: 'Ingrese el valor de k',
+                    child: MyButton(
+                      onPressed: _downloadExcelWeb,
+                      labelText: 'Descargar Excel',
                       imageUrl:
-                          'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/sdeqbahu0f7e9jlkvorr.png',
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    flex: 1,
-                    child: MyInput(
-                      controller: _cController,
-                      labelText: 'Constante c',
-                      hintText: 'Ingrese el valor de c',
-                      imageUrl:
-                          'https://res.cloudinary.com/deaodcmae/image/upload/v1725228817/wkob3ymmaazdtagv6ky1.png',
-                      keyboardType: TextInputType.number,
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                      buttonColor: const Color.fromARGB(255, 13, 122, 55),
+                      textColor: Colors.white,
                     ),
                   ),
                 ],
@@ -183,139 +321,32 @@ class _MethodThreePageState extends State<MethodThreePage> {
               Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        flex: 1,
-                        child: MyInput(
-                          controller: _seedController,
-                          labelText: 'Semilla',
-                          hintText: 'Ingrese la semilla',
+                        child: MyButton(
+                          onPressed: _generateNumbers,
+                          labelText: 'Generar',
                           imageUrl:
-                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
-                          keyboardType: TextInputType.number,
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                          buttonColor: const Color(0xFF232635),
+                          textColor: Colors.white,
                         ),
                       ),
                       const SizedBox(width: 10.0),
                       Expanded(
-                        flex: 1,
-                        child: MyInput(
-                          controller: _countController,
-                          labelText: 'Cantidad',
-                          hintText: 'Ingrese la cantidad',
+                        child: MyButton(
+                          onPressed: _downloadCSVWeb,
+                          labelText: 'Descargar CSV',
                           imageUrl:
-                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
-                          keyboardType: TextInputType.number,
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                          buttonColor: const Color.fromARGB(255, 162, 27, 25),
+                          textColor: Colors.white,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: MyInput(
-                          controller: _kController,
-                          labelText: 'Constante k',
-                          hintText: 'Ingrese el valor de k',
-                          imageUrl:
-                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                      const SizedBox(width: 10.0),
-                      Expanded(
-                        flex: 1,
-                        child: MyInput(
-                          controller: _cController,
-                          labelText: 'Constante c',
-                          hintText: 'Ingrese el valor de c',
-                          imageUrl:
-                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ] else ...[
-              Column(
-                children: [
-                  MyInput(
-                    controller: _seedController,
-                    labelText: 'Semilla',
-                    hintText: 'Ingrese la semilla',
-                    imageUrl:
-                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 10.0),
-                  MyInput(
-                    controller: _countController,
-                    labelText: 'Cantidad',
-                    hintText: 'Ingrese la cantidad',
-                    imageUrl:
-                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 10.0),
-                  MyInput(
-                    controller: _kController,
-                    labelText: 'Constante k',
-                    hintText: 'Ingrese el valor de k',
-                    imageUrl:
-                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 10.0),
-                  MyInput(
-                    controller: _cController,
-                    labelText: 'Constante c',
-                    hintText: 'Ingrese el valor de c',
-                    imageUrl:
-                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
-                    keyboardType: TextInputType.number,
-                  ),
-                ],
-              ),
-            ],
-
-            const SizedBox(height: 20.0),
-
-            // Buttons Generar, CSV, Excel
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: MyButton(
-                    onPressed: _generateNumbers,
-                    labelText: 'Generar',
-                    imageUrl:
-                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
-                    buttonColor: const Color(0xFF232635),
-                    textColor: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 10.0),
-                Expanded(
-                  flex: 1,
-                  child: MyButton(
-                    onPressed: _downloadCSVWeb,
-                    labelText: 'Descargar CSV',
-                    imageUrl:
-                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
-                    buttonColor: const Color.fromARGB(255, 162, 27, 25),
-                    textColor: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 10.0),
-                Expanded(
-                  flex: 1,
-                  child: MyButton(
+                  const SizedBox(height: 3.0),
+                  MyButton(
                     onPressed: _downloadExcelWeb,
                     labelText: 'Descargar Excel',
                     imageUrl:
@@ -323,13 +354,42 @@ class _MethodThreePageState extends State<MethodThreePage> {
                     buttonColor: const Color.fromARGB(255, 13, 122, 55),
                     textColor: Colors.white,
                   ),
-                )
-              ],
-            ),
+                ],
+              ),
+            ] else ...[
+              Column(
+                children: [
+                  MyButton(
+                    onPressed: _generateNumbers,
+                    labelText: 'Generar',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                    buttonColor: const Color(0xFF232635),
+                    textColor: Colors.white,
+                  ),
+                  const SizedBox(height: 3.0),
+                  MyButton(
+                    onPressed: _downloadCSVWeb,
+                    labelText: 'Descargar CSV',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                    buttonColor: const Color.fromARGB(255, 162, 27, 25),
+                    textColor: Colors.white,
+                  ),
+                  const SizedBox(height: 3.0),
+                  MyButton(
+                    onPressed: _downloadExcelWeb,
+                    labelText: 'Descargar Excel',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                    buttonColor: const Color.fromARGB(255, 13, 122, 55),
+                    textColor: Colors.white,
+                  ),
+                ],
+              ),
+            ],
 
-            const SizedBox(height: 20.0),
-
-            // MessageDisplay
+            const SizedBox(height: 5.0),
             if (_results.isNotEmpty && _message.isNotEmpty)
               Center(
                 child: MessageDisplay(
@@ -337,28 +397,17 @@ class _MethodThreePageState extends State<MethodThreePage> {
                   messageType: _messageType,
                 ),
               ),
-            const SizedBox(height: 20.0),
-
-            // CustomTable
-            if (_results.isNotEmpty)
-              Expanded(
+            const SizedBox(height: 5.0),
+            Expanded(
               child: Center(
-                child: CustomTable(results: _results), 
+                child: CustomTable(
+                    results:
+                        _results), // Usando el nuevo componente CustomTable
               ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _seedController.dispose();
-    _countController.dispose();
-    _kController.dispose();
-    _cController.dispose();
-    _fileNameController.dispose();
-    super.dispose();
   }
 }
