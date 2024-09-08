@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pseudo_random_number/views/method_four.dart';
 import 'package:pseudo_random_number/views/method_one.dart';
 import 'package:pseudo_random_number/views/method_three.dart';
 import 'package:pseudo_random_number/views/method_two.dart';
@@ -199,7 +200,7 @@ class WelcomePage extends StatelessWidget {
         _buildButton(
           context,
           'Algoritmo Congruencial Multiplicativo',
-          MethodThreePage(),
+          const MethodFourPage(),
           Color.fromARGB(255, 147, 14, 14), // Gris Medio
         ),
       ],
