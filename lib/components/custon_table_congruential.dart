@@ -53,7 +53,7 @@ class CustomTable extends StatelessWidget {
 
                     DataColumn(
                       label: Text(
-                        'x1',
+                        'Xi',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

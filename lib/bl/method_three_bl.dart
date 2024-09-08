@@ -5,9 +5,7 @@ class MethodThreeBL {
     List<Map<String, dynamic>> results = [];
     int currentSeed = seed;
 
-    // Verificar si count es una potencia de 2
     if ((count & (count - 1)) != 0) {
-      // No es una potencia de 2, ajustar al siguiente número que lo sea
       count = pow(2, (log(count) / log(2)).ceil()).toInt();
     }
 

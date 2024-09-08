@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
 
 class MySummary extends StatelessWidget {
   final ValueNotifier<String> seed;
@@ -55,7 +55,7 @@ class MySummary extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildValueRow("X₀ =", seed),
-                    _buildValueRow("P =", quantity),
+                    _buildQuantityRow("P =", quantity),
                     _buildValueRow("k =", constantK),
                     _buildModuloRow("c =", moduloP),
                   ],
@@ -102,6 +102,74 @@ class MySummary extends StatelessWidget {
                   color: Color(0xFF333333),
                   fontWeight: FontWeight.w500,
                   fontSize: 14.0,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildQuantityRow(String label, ValueNotifier<String> notifier) {
+    return ValueListenableBuilder<String>(
+      valueListenable: notifier,
+      builder: (context, value, child) {
+        int? number = 0;
+        String resultText = '-';
+        bool isPowerOfTwo = true;
+        int nextPowerOfTwo = 0;
+
+        if (value.isNotEmpty) {
+          number = int.tryParse(value);
+          isPowerOfTwo = number != null && (number & (number - 1)) == 0;
+          nextPowerOfTwo = isPowerOfTwo ? number : _nextPowerOfTwo(number!);
+          resultText = isPowerOfTwo
+              ? value
+              : '$value (se generarán $nextPowerOfTwo)';
+          number = isPowerOfTwo ? number : nextPowerOfTwo;
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Color(0xFF444444),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.0,
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      resultText,
+                      style: TextStyle(
+                        color: isPowerOfTwo ? Colors.green : Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                    if (!isPowerOfTwo)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: Text(
+                          '* $number no es potencia de 2',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -163,9 +231,17 @@ class MySummary extends StatelessWidget {
       valueListenable: notifier,
       builder: (context, value, child) {
         String result = '-';
+        double? number;
+
         if (value.isNotEmpty) {
-          double? number = double.tryParse(value);
+          number = double.tryParse(value);
+
           if (number != null && number > 0) {
+            bool isPowerOfTwo = (log(number) / log(2) % 1 == 0);
+            double nextPowerOfTwo = isPowerOfTwo ? number : _nextPowerOfTwo(number.toInt()).toDouble();
+
+            number = isPowerOfTwo ? number : nextPowerOfTwo;
+
             if (label.contains('g')) {
               result = (log(number) / log(2)).toStringAsFixed(4);
             } else if (label.contains('m')) {
@@ -202,6 +278,10 @@ class MySummary extends StatelessWidget {
         );
       },
     );
+  }
+
+  int _nextPowerOfTwo(int number) {
+    return pow(2, (log(number) / log(2)).ceil()).toInt();
   }
 
   bool _isPrime(int number) {
