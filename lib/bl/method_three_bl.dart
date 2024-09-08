@@ -16,25 +16,21 @@ class MethodThreeBL {
       int xi = (a * currentSeed + c) % m;
       double ri = xi / (m - 1);
 
-      // Guardar el resultado
       results.add({
         'i': i + 1,
         'xi': xi,
         'ri': ri.toStringAsFixed(6),
       });
 
-      // Actualizar la semilla para la siguiente iteración
       currentSeed = xi;
     }
 
     print(results);
 
-    // Verificar degeneración después de generar todos los números
     Map<String, String> degenerationResult = verifyDegeneration(results);
     String message = degenerationResult['message']!;
     String messageType = degenerationResult['message_type']!;
 
-    // Mensaje de éxito si la generación fue completada sin problemas
     if (messageType == 'success' && results.isEmpty) {
       message = message;
       messageType = 'error';
@@ -68,37 +64,25 @@ class MethodThreeBL {
     for (int i = 0; i < results.length; i++) {
       int xi = results[i]['xi'];
 
-      // Verificar si el número se repitió
       if (seenNumbers.contains(xi)) {
         message =
             'Degeneración detectada: El número $xi se repitió en la posición ${i + 1}.';
         messageType = 'error';
         degenerationDetected = true;
         degenerateStartIndex = i;
-        break; // No es necesario continuar verificando
+        break; 
       }
       seenNumbers.add(xi);
-
-      // Verificar si la secuencia se ha convertido en cero
-      if (xi == 0) {
-        message =
-            'Secuencia degenerada: Todos los números generados son cero a partir de la posición ${i + 1}.';
-        messageType = 'error';
-        degenerationDetected = true;
-        degenerateStartIndex = i;
-        break; // No es necesario continuar verificando
-      }
     }
 
-    // Mensaje si no se detectó degeneración pero se generaron números
     if (!degenerationDetected && results.isNotEmpty) {
       message =
           'La generación se completó sin detectar degeneración. Se generaron ${results.length} números.';
       messageType = 'success';
     } else if (degenerationDetected && degenerateStartIndex >= 0) {
       message =
-          'La secuencia se degeneró a partir de la posición ${degenerateStartIndex + 1}. Verifique los números generados.';
-      messageType = 'error';
+          'La secuencia repite los valores desde la posición ${degenerateStartIndex + 1}. Los primeros $degenerateStartIndex números son válidos.';
+      messageType = 'success';
     }
 
     return {
