@@ -160,7 +160,7 @@ class MySummary extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 4.0),
                         child: Text(
-                          '* $number no es potencia de 2',
+                          '* $number es la potencia\nde 2 más cercana.',
                           style: const TextStyle(
                             color: Colors.black,
                             fontStyle: FontStyle.italic,
