@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pseudo_random_number/bl/method_three_bl.dart';
 import 'package:pseudo_random_number/components/custom_summary.dart';
-import 'package:pseudo_random_number/components/custom_table.dart';
+import 'package:pseudo_random_number/components/custon_table_congruential.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
 import 'package:pseudo_random_number/components/message_display.dart';
