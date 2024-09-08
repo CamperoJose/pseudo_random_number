@@ -55,7 +55,8 @@ class _MethodFourPageState extends State<MethodFourPage> {
 
     if (seed > 0 && count > 0 && k >= 0 && c >= 0) {
       setState(() {
-        var result = MethodFourBL().generateNumbers(seed, count, k, digits, opSelected);
+        var result =
+            MethodFourBL().generateNumbers(seed, count, k, digits, opSelected);
         _results = result['results'];
         _message = result['message'];
         _messageType = result['message_type'];
@@ -198,50 +199,97 @@ class _MethodFourPageState extends State<MethodFourPage> {
                             ),
                             const SizedBox(width: 10.0),
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Selecciona una ecuación para a:',
-                                    style: TextStyle(fontSize: 16),
+                              child: Center(
+                                child: Container(
+                                  padding: EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+
+                                    borderRadius: BorderRadius.circular(15),
+                                    gradient: const LinearGradient(
+          colors: [Color(0xFFF5F5DC), Color(0xFFEDEBE0)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 6.0,
+          ),
+        ],
                                   ),
-                                  Row(
+                                  child: Column(
                                     children: [
-                                      Expanded(
-                                        child: ListTile(
-                                          title: Math.tex(r'a=3+8k'),
-                                          leading: Radio<String>(
-                                            value: 'a=3+8k',
-                                            groupValue: _selectedEquation,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                _selectedEquation = value!;
-                                                selectedEquationNotifier.value =
-                                                    value;
-                                              });
-                                            },
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 1),
+                                        child: Text(
+                                          'Selecciona una ecuación para a:',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w100,
+                                            color: Colors.blueGrey[800],
                                           ),
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: ListTile(
-                                          title: Math.tex(r'a=5+8k'),
-                                          leading: Radio<String>(
-                                            value: 'a=5+8k',
-                                            groupValue: _selectedEquation,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                _selectedEquation = value!;
-                                                selectedEquationNotifier.value =
-                                                    value;
-                                              });
-                                            },
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: ListTile(
+                                              contentPadding: EdgeInsets.zero,
+                                              title: Math.tex(
+                                                r'a=3+8k',
+                                                textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black87),
+                                              ),
+                                              leading: Radio<String>(
+                                                value: 'a=3+8k',
+                                                groupValue: _selectedEquation,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedEquation = value!;
+                                                    selectedEquationNotifier
+                                                        .value = value;
+                                                  });
+                                                },
+                                                activeColor:
+                                                    Colors.blueGrey[800],
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          Expanded(
+                                            child: ListTile(
+                                              contentPadding: EdgeInsets.zero,
+                                              title: Math.tex(
+                                                r'a=5+8k',
+                                                textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black87),
+                                              ),
+                                              leading: Radio<String>(
+                                                value: 'a=5+8k',
+                                                groupValue: _selectedEquation,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedEquation = value!;
+                                                    selectedEquationNotifier
+                                                        .value = value;
+                                                  });
+                                                },
+                                                activeColor:
+                                                    Colors.blueGrey[800],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ],

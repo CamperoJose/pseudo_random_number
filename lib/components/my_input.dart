@@ -26,7 +26,7 @@ class MyInput extends StatelessWidget {
       width: width,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [Color(0xFFF5F5DC), Color(0xFFEDEBE0)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
