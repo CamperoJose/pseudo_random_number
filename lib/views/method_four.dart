@@ -2,12 +2,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:pseudo_random_number/bl/method_four_bl.dart';
-import 'package:pseudo_random_number/components/custom_summary.dart';
+import 'package:pseudo_random_number/components/custom_summary_mul.dart';
 import 'package:pseudo_random_number/components/custon_table_congruential.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
 import 'package:pseudo_random_number/components/message_display.dart';
 import 'package:pseudo_random_number/utils/file_download.dart';
+import 'package:flutter_math_fork/ast.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:flutter_math_fork/tex.dart';
 
 class MethodFourPage extends StatefulWidget {
   const MethodFourPage({super.key});
@@ -29,10 +32,12 @@ class _MethodFourPageState extends State<MethodFourPage> {
   final quantityNotifier = ValueNotifier<String>('');
   final constantKNotifier = ValueNotifier<String>('');
   final moduloPNotifier = ValueNotifier<String>('');
+  final selectedEquationNotifier = ValueNotifier<String>('');
 
   List<Map<String, dynamic>> _results = [];
   String _message = '';
   String _messageType = 'success';
+  String _selectedEquation = 'a=3+8k';
 
   void _generateNumbers() {
     final int seed = int.tryParse(_seedController.text) ?? 0;
@@ -40,10 +45,17 @@ class _MethodFourPageState extends State<MethodFourPage> {
     final int k = int.tryParse(_kController.text) ?? 0;
     final int c = int.tryParse(_cController.text) ?? 0;
     final int digits = int.tryParse(_digitsController.text) ?? 4;
+    final String aSelected = _selectedEquation;
+    int opSelected = 0;
+    if (aSelected == 'a=3+8k') {
+      opSelected = 0;
+    } else {
+      opSelected = 1;
+    }
 
     if (seed > 0 && count > 0 && k >= 0 && c >= 0) {
       setState(() {
-        var result = MethodFourBL().generateNumbers(seed, count, k, digits, 0);
+        var result = MethodFourBL().generateNumbers(seed, count, k, digits, opSelected);
         _results = result['results'];
         _message = result['message'];
         _messageType = result['message_type'];
@@ -185,7 +197,53 @@ class _MethodFourPageState extends State<MethodFourPage> {
                               ),
                             ),
                             const SizedBox(width: 10.0),
-
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Selecciona una ecuación para a:',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListTile(
+                                          title: Math.tex(r'a=3+8k'),
+                                          leading: Radio<String>(
+                                            value: 'a=3+8k',
+                                            groupValue: _selectedEquation,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEquation = value!;
+                                                selectedEquationNotifier.value =
+                                                    value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: ListTile(
+                                          title: Math.tex(r'a=5+8k'),
+                                          leading: Radio<String>(
+                                            value: 'a=5+8k',
+                                            groupValue: _selectedEquation,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedEquation = value!;
+                                                selectedEquationNotifier.value =
+                                                    value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                         Center(
@@ -203,7 +261,9 @@ class _MethodFourPageState extends State<MethodFourPage> {
                                 textAlign: TextAlign
                                     .center, // Centra el texto dentro de su espacio
                               ),
-                              const SizedBox(width: 10), // Espaciado entre el texto y el InputQty
+                              const SizedBox(
+                                  width:
+                                      10), // Espaciado entre el texto y el InputQty
                               InputQty(
                                 initVal:
                                     int.tryParse(_digitsController.text) ?? 4,
@@ -238,6 +298,7 @@ class _MethodFourPageState extends State<MethodFourPage> {
                       quantity: quantityNotifier,
                       constantK: constantKNotifier,
                       moduloP: moduloPNotifier,
+                      aSelected: selectedEquationNotifier,
                     ),
                   ),
                 ],
@@ -287,55 +348,54 @@ class _MethodFourPageState extends State<MethodFourPage> {
                         ),
                       ),
                       const SizedBox(width: 10.0),
-
                     ],
                   ),
-
-                                          Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment
-                                .center, // Centra los elementos en la fila
-                            mainAxisSize: MainAxisSize
-                                .min, // Ajusta el tamaño al contenido
-                            children: [
-                              const Text(
-                                "Cantidad de decimales a generar:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign
-                                    .center, // Centra el texto dentro de su espacio
-                              ),
-                              const SizedBox(width: 10), // Espaciado entre el texto y el InputQty
-                              InputQty(
-                                initVal:
-                                    int.tryParse(_digitsController.text) ?? 4,
-                                minVal: 2,
-                                maxVal: 10,
-                                onQtyChanged: (value) {
-                                  _digitsController.text = value.toString();
-                                },
-                                decoration: const QtyDecorationProps(
-                                  isBordered: false,
-                                  minusBtn:
-                                      Icon(Icons.remove, color: Colors.red),
-                                  plusBtn: Icon(Icons.add, color: Colors.green),
-                                  width: 20,
-                                ),
-                                qtyFormProps: const QtyFormProps(
-                                  enableTyping: true,
-                                ),
-                              ),
-                            ],
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .center, // Centra los elementos en la fila
+                      mainAxisSize:
+                          MainAxisSize.min, // Ajusta el tamaño al contenido
+                      children: [
+                        const Text(
+                          "Cantidad de decimales a generar:",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign
+                              .center, // Centra el texto dentro de su espacio
+                        ),
+                        const SizedBox(
+                            width:
+                                10), // Espaciado entre el texto y el InputQty
+                        InputQty(
+                          initVal: int.tryParse(_digitsController.text) ?? 4,
+                          minVal: 2,
+                          maxVal: 10,
+                          onQtyChanged: (value) {
+                            _digitsController.text = value.toString();
+                          },
+                          decoration: const QtyDecorationProps(
+                            isBordered: false,
+                            minusBtn: Icon(Icons.remove, color: Colors.red),
+                            plusBtn: Icon(Icons.add, color: Colors.green),
+                            width: 20,
+                          ),
+                          qtyFormProps: const QtyFormProps(
+                            enableTyping: true,
                           ),
                         ),
-                        const SizedBox(height: 5.0),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 5.0),
                   const SizedBox(height: 3.0),
                   MySummary(
                     seed: seedNotifier,
                     quantity: quantityNotifier,
                     constantK: constantKNotifier,
                     moduloP: moduloPNotifier,
+                    aSelected: selectedEquationNotifier,
                   ),
                 ],
               ),
@@ -408,8 +468,6 @@ class _MethodFourPageState extends State<MethodFourPage> {
                       ),
                     ],
                   ),
-
-                  
                   const SizedBox(height: 3.0),
                   MyButton(
                     onPressed: _downloadExcelWeb,
