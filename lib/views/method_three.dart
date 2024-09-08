@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:pseudo_random_number/bl/method_three_bl.dart';
 import 'package:pseudo_random_number/components/custom_summary.dart';
 import 'package:pseudo_random_number/components/custon_table_congruential.dart';
@@ -12,6 +13,7 @@ class MethodThreePage extends StatefulWidget {
   const MethodThreePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MethodThreePageState createState() => _MethodThreePageState();
 }
 
@@ -21,6 +23,7 @@ class _MethodThreePageState extends State<MethodThreePage> {
   final TextEditingController _kController = TextEditingController();
   final TextEditingController _cController = TextEditingController();
   final TextEditingController _fileNameController = TextEditingController();
+  final TextEditingController _digitsController = TextEditingController();
 
   final seedNotifier = ValueNotifier<String>('');
   final quantityNotifier = ValueNotifier<String>('');
@@ -36,10 +39,11 @@ class _MethodThreePageState extends State<MethodThreePage> {
     final int count = int.tryParse(_countController.text) ?? 0;
     final int k = int.tryParse(_kController.text) ?? 0;
     final int c = int.tryParse(_cController.text) ?? 0;
+    final int digits = int.tryParse(_digitsController.text) ?? 4;
 
     if (seed > 0 && count > 0 && k >= 0 && c >= 0) {
       setState(() {
-        var result = MethodThreeBL().generateNumbers(seed, count, k, c);
+        var result = MethodThreeBL().generateNumbers(seed, count, k, c, digits);
         _results = result['results'];
         _message = result['message'];
         _messageType = result['message_type'];
@@ -154,7 +158,8 @@ class _MethodThreePageState extends State<MethodThreePage> {
                               child: MyInput(
                                 controller: _countController,
                                 labelText: 'Cantidad de números a generar',
-                                hintText: 'Ingrese la cantidad de números a generar',
+                                hintText:
+                                    'Ingrese la cantidad de números a generar',
                                 imageUrl:
                                     'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
                                 keyboardType: TextInputType.number,
@@ -194,6 +199,45 @@ class _MethodThreePageState extends State<MethodThreePage> {
                             ),
                           ],
                         ),
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment
+                                .center, // Centra los elementos en la fila
+                            mainAxisSize: MainAxisSize
+                                .min, // Ajusta el tamaño al contenido
+                            children: [
+                              const Text(
+                                "Cantidad de decimales a generar:",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign
+                                    .center, // Centra el texto dentro de su espacio
+                              ),
+                              const SizedBox(width: 10), // Espaciado entre el texto y el InputQty
+                              InputQty(
+                                initVal:
+                                    int.tryParse(_digitsController.text) ?? 4,
+                                minVal: 2,
+                                maxVal: 10,
+                                onQtyChanged: (value) {
+                                  _digitsController.text = value.toString();
+                                },
+                                decoration: const QtyDecorationProps(
+                                  isBordered: false,
+                                  minusBtn:
+                                      Icon(Icons.remove, color: Colors.red),
+                                  plusBtn: Icon(Icons.add, color: Colors.green),
+                                  width: 20,
+                                ),
+                                qtyFormProps: const QtyFormProps(
+                                  enableTyping: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 5.0),
                       ],
                     ),
                   ),
@@ -267,13 +311,53 @@ class _MethodThreePageState extends State<MethodThreePage> {
                       ),
                     ],
                   ),
+
+                                          Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment
+                                .center, // Centra los elementos en la fila
+                            mainAxisSize: MainAxisSize
+                                .min, // Ajusta el tamaño al contenido
+                            children: [
+                              const Text(
+                                "Cantidad de decimales a generar:",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign
+                                    .center, // Centra el texto dentro de su espacio
+                              ),
+                              const SizedBox(width: 10), // Espaciado entre el texto y el InputQty
+                              InputQty(
+                                initVal:
+                                    int.tryParse(_digitsController.text) ?? 4,
+                                minVal: 2,
+                                maxVal: 10,
+                                onQtyChanged: (value) {
+                                  _digitsController.text = value.toString();
+                                },
+                                decoration: const QtyDecorationProps(
+                                  isBordered: false,
+                                  minusBtn:
+                                      Icon(Icons.remove, color: Colors.red),
+                                  plusBtn: Icon(Icons.add, color: Colors.green),
+                                  width: 20,
+                                ),
+                                qtyFormProps: const QtyFormProps(
+                                  enableTyping: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 5.0),
                   const SizedBox(height: 3.0),
                   MySummary(
-                      seed: seedNotifier,
-                      quantity: quantityNotifier,
-                      constantK: constantKNotifier,
-                      moduloP: moduloPNotifier,
-                    ),
+                    seed: seedNotifier,
+                    quantity: quantityNotifier,
+                    constantK: constantKNotifier,
+                    moduloP: moduloPNotifier,
+                  ),
                 ],
               ),
             ],
@@ -345,6 +429,8 @@ class _MethodThreePageState extends State<MethodThreePage> {
                       ),
                     ],
                   ),
+
+                  
                   const SizedBox(height: 3.0),
                   MyButton(
                     onPressed: _downloadExcelWeb,
