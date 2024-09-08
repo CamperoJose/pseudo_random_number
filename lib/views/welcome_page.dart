@@ -44,7 +44,7 @@ class WelcomePage extends StatelessWidget {
                                 fontSize: 42.0,
                                 fontWeight: FontWeight.w900,
                                 color: Colors.white,
-                                letterSpacing: 2.0,
+                                letterSpacing: 2.0, 
                                 shadows: [
                                   Shadow(
                                     offset: Offset(3, 3),

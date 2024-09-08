@@ -153,8 +153,8 @@ class _MethodThreePageState extends State<MethodThreePage> {
                             Expanded(
                               child: MyInput(
                                 controller: _countController,
-                                labelText: 'Cantidad',
-                                hintText: 'Ingrese la cantidad',
+                                labelText: 'Cantidad de números a generar',
+                                hintText: 'Ingrese la cantidad de números a generar',
                                 imageUrl:
                                     'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
                                 keyboardType: TextInputType.number,
