@@ -5,8 +5,14 @@ class MethodThreeBL {
     List<Map<String, dynamic>> results = [];
     int currentSeed = seed;
 
+    // Verificar si count es una potencia de 2
+    if ((count & (count - 1)) != 0) {
+      // No es una potencia de 2, ajustar al siguiente número que lo sea
+      count = pow(2, (log(count) / log(2)).ceil()).toInt();
+    }
+
     // Parámetros del generador
-    int m = (pow(2, (log(count) / log(2)).ceil())).toInt(); // m debe ser una potencia de 2
+    int m = count; // m ya será una potencia de 2
     double g = log(count) / log(2);
     int a = 1 + 4 * k;
 
@@ -77,7 +83,7 @@ class MethodThreeBL {
     }
 
     if (!degenerationDetected && results.isNotEmpty) {
-      message = 'La generación se completó sin detectar degeneración. Se generaron ${results.length} números.';
+      message = 'La generación se completó sin detectar degeneración. Se generaron ${results.length -1 } números válidos.';
       messageType = 'success';
     } else if (degenerationDetected && degenerateStartIndex >= 0) {
       message = 'La secuencia repite los valores desde la posición ${degenerateStartIndex + 1}. Los primeros $degenerateStartIndex números son válidos.';
