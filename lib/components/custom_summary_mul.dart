@@ -59,7 +59,6 @@ class MySummary extends StatelessWidget {
                     _buildValueRow("X₀ =", seed),
                     _buildQuantityRow("P =", quantity),
                     _buildValueRow("k =", constantK),
-                    _buildModuloRow("c =", moduloP),
                   ],
                 ),
               ),
@@ -85,6 +84,12 @@ class MySummary extends StatelessWidget {
     return ValueListenableBuilder<String>(
       valueListenable: notifier,
       builder: (context, value, child) {
+        int? number = int.tryParse(value);
+        bool isEven = number != null && number % 2 == 0;
+        String displayValue = value.isNotEmpty
+            ? '$value (${isEven ? "par" : "impar"})'
+            : '-';
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: Row(
@@ -99,9 +104,9 @@ class MySummary extends StatelessWidget {
               ),
               const SizedBox(width: 8.0),
               Text(
-                value.isNotEmpty ? value : '-',
-                style: const TextStyle(
-                  color: Color(0xFF333333),
+                displayValue,
+                style: TextStyle(
+                  color: isEven ? Colors.red : Colors.green,
                   fontWeight: FontWeight.w500,
                   fontSize: 14.0,
                 ),
@@ -233,14 +238,6 @@ class MySummary extends StatelessWidget {
       builder: (context, value, child) {
         String result = '-';
         double? number;
-        print("label");
-        print(label);
-        print("notifier");
-        print(notifier);
-        print("=====");
-        print("a value");
-        print(aSelected.value);
-        print("=====");
 
         if (value.isNotEmpty) {
           number = double.tryParse(value);
@@ -254,14 +251,11 @@ class MySummary extends StatelessWidget {
             number = isPowerOfTwo ? number : nextPowerOfTwo;
 
             if (label.contains('g')) {
-              result = (log(number) / log(2)).toStringAsFixed(4);
+              result = (log(number) / log(2) + 2).toStringAsFixed(4);
             } else if (label.contains('m')) {
               double g = log(number) / log(2) + 2;
               result = pow(2, g).toStringAsFixed(4);
             } else if (label.contains('a')) {
-              print("selected");
-              print(aSelected);
-
               if (aSelected.value == 'a=5+8k') {
                 result = (5 + 8 * number).toStringAsFixed(4);
               } else {
@@ -298,17 +292,17 @@ class MySummary extends StatelessWidget {
     );
   }
 
-  int _nextPowerOfTwo(int number) {
-    return pow(2, (log(number) / log(2)).ceil()).toInt();
-  }
-
   bool _isPrime(int number) {
-    if (number <= 1) return false;
-    if (number == 2) return true;
-    if (number % 2 == 0) return false;
-    for (int i = 3; i <= sqrt(number).toInt(); i += 2) {
-      if (number % i == 0) return false;
+    if (number < 2) return false;
+    for (int i = 2; i <= sqrt(number); i++) {
+      if (number % i == 0) {
+        return false;
+      }
     }
     return true;
+  }
+
+  int _nextPowerOfTwo(int number) {
+    return pow(2, (log(number) / log(2)).ceil()).toInt();
   }
 }

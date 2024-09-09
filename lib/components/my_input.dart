@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyInput extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final String hintText;
-  final String imageUrl; 
+  final String imageUrl;
   final TextInputType keyboardType;
   final double? width;
-  final ValueChanged<String>? onChanged; 
+  final ValueChanged<String>? onChanged;
 
   const MyInput({
     Key? key,
@@ -17,7 +18,7 @@ class MyInput extends StatelessWidget {
     required this.imageUrl,
     this.keyboardType = TextInputType.number,
     this.width,
-    this.onChanged, 
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -69,6 +70,9 @@ class MyInput extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 16.0,
                 ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly, // Solo permite números
+                ],
                 decoration: InputDecoration(
                   labelText: labelText,
                   hintText: hintText,
@@ -81,11 +85,12 @@ class MyInput extends StatelessWidget {
                     fontSize: 14.0,
                   ),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 8.0),
                 ),
                 cursorColor: Color(0xFF232635),
                 cursorWidth: 2.0,
-                onChanged: onChanged, 
+                onChanged: onChanged,
               ),
             ),
           ),
