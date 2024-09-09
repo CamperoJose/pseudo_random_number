@@ -5,17 +5,17 @@ class MethodOneBL {
     List<Map<String, dynamic>> results = [];
     int currentSeed = seed;
 
-    //canttidad de digitos de la semilla:
+    // Cantidad de dígitos de la semilla
     int digits = seed.toString().length;
 
     // Generar todos los números
     for (int i = 0; i < count; i++) {
       int yi = currentSeed * currentSeed;
       String yiString = yi.toString();
-      
+
       // Determinar la cantidad de dígitos actuales en yiString
       int yiLength = yiString.length;
-      
+
       // Aplicar reglas para agregar ceros a la izquierda
       if ((yiLength % 2 == 0 && digits % 2 != 0) || (yiLength % 2 != 0 && digits % 2 == 0)) {
         yiString = yiString.padLeft(yiLength + 1, '0');
@@ -44,7 +44,7 @@ class MethodOneBL {
         'yi': yi,
         'operation': operation,
         'x1': x1,
-        'ri': ri.toStringAsFixed(digits - 1),
+        'ri': ri,
       });
 
       // Actualizar la semilla para la siguiente iteración
@@ -58,7 +58,7 @@ class MethodOneBL {
 
     // Mensaje de éxito si la generación fue completada sin problemas
     if (messageType == 'success' && results.isEmpty) {
-      message = message;
+      message = "No se generaron resultados.";
       messageType = 'error';
     } else if (messageType == 'success') {
       message = message;
@@ -72,33 +72,39 @@ class MethodOneBL {
   }
 
   Map<String, String> verifyDegeneration(List<Map<String, dynamic>> results) {
-    Set<int> seenNumbers = {};
+    Map<double, int> seenNumbers = {}; // Almacena el número y su primera aparición
     String message = 'La secuencia de números generada es válida.';
     String messageType = 'success';
 
     bool degenerationDetected = false;
     int degenerateStartIndex = -1;
+    bool firstZeroEncountered = false;
 
     for (int i = 0; i < results.length; i++) {
-      int x1 = results[i]['x1'];
+      double ri = results[i]['ri'];
 
-      // Verificar si el número se repitió
-      if (seenNumbers.contains(x1)) {
-        message = 'Degeneración detectada: El número $x1 se repitió en la posición ${i + 1}.';
-        messageType = 'error';
-        degenerationDetected = true;
-        degenerateStartIndex = i;
-        break; // No es necesario continuar verificando
-      }
-      seenNumbers.add(x1);
-
-      // Verificar si la secuencia se ha convertido en cero
-      if (x1 == 0) {
-        message = 'Secuencia degenerada: Todos los números generados son cero a partir de la posición ${i + 1}.';
-        messageType = 'error';
-        degenerationDetected = true;
-        degenerateStartIndex = i;
-        break; // No es necesario continuar verificando
+      // Verificar si el número generado es cero
+      if (ri == 0) {
+        if (firstZeroEncountered) {
+          message = 'Secuencia degenerada: Todos los números generados son cero a partir de la posición ${i + 1}. El número cero se generó en la posición ${i}.';
+          messageType = 'error';
+          degenerationDetected = true;
+          degenerateStartIndex = i;
+          break; // No es necesario continuar verificando
+        } else {
+          firstZeroEncountered = true;
+        }
+      } else {
+        // Verificar si el número aleatorio se repitió
+        if (seenNumbers.containsKey(ri)) {
+          int firstOccurrence = seenNumbers[ri]!;
+          message = 'Degeneración detectada: El número ${ri.toStringAsFixed(4)} se repitió en la posición ${i + 1}. La primera aparición fue en la posición ${firstOccurrence + 1}.';
+          messageType = 'error';
+          degenerationDetected = true;
+          degenerateStartIndex = i;
+          break; // No es necesario continuar verificando
+        }
+        seenNumbers[ri] = i; // Registrar la posición de la primera aparición
       }
     }
 
@@ -107,7 +113,6 @@ class MethodOneBL {
       message = 'La generación se completó sin detectar degeneración. Se generaron ${results.length} números.';
       messageType = 'success';
     } else if (degenerationDetected && degenerateStartIndex >= 0) {
-      message = 'La secuencia se degeneró a partir de la posición ${degenerateStartIndex + 1}. Verifique los números generados.';
       messageType = 'error';
     }
 

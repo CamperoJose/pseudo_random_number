@@ -1,13 +1,12 @@
 import 'dart:math';
 
 class MethodTwoBL {
-  Map<String, dynamic> generateNumbers(
-      int seed, int seed2, int count) {
+  Map<String, dynamic> generateNumbers(int seed, int seed2, int count) {
     List<Map<String, dynamic>> results = [];
     int currentSeed = seed;
     int currentSeed2 = seed2;
 
-    // digitos de semilla:
+    // Dígitos de las semillas:
     int digits = seed.toString().length;
 
     // Generar todos los números
@@ -42,7 +41,7 @@ class MethodTwoBL {
         'yi': yi,
         'operation': operation,
         'x1': x1,
-        'ri': ri.toStringAsFixed(digits ),
+        'ri': ri.toStringAsFixed(digits),
       });
 
       // Actualizar la semilla para la siguiente iteración
@@ -57,7 +56,7 @@ class MethodTwoBL {
 
     // Mensaje de éxito si la generación fue completada sin problemas
     if (messageType == 'success' && results.isEmpty) {
-      message = message;
+      message = "No se generaron resultados.";
       messageType = 'error';
     } else if (messageType == 'success') {
       message = message;
@@ -71,46 +70,47 @@ class MethodTwoBL {
   }
 
   Map<String, String> verifyDegeneration(List<Map<String, dynamic>> results) {
-    Set<int> seenNumbers = {};
+    Map<double, int> seenNumbers = {};
     String message = 'La secuencia de números generada es válida.';
     String messageType = 'success';
 
     bool degenerationDetected = false;
     int degenerateStartIndex = -1;
+    bool firstZeroEncountered = false;
 
     for (int i = 0; i < results.length; i++) {
-      int x1 = results[i]['x1'];
+      double ri = double.parse(results[i]['ri']);
 
-      // Verificar si el número se repitió
-      if (seenNumbers.contains(x1)) {
-        message =
-            'Degeneración detectada: El número $x1 se repitió en la posición ${i + 1}.';
-        messageType = 'error';
-        degenerationDetected = true;
-        degenerateStartIndex = i;
-        break; // No es necesario continuar verificando
-      }
-      seenNumbers.add(x1);
-
-      // Verificar si la secuencia se ha convertido en cero
-      if (x1 == 0) {
-        message =
-            'Secuencia degenerada: Todos los números generados son cero a partir de la posición ${i + 1}.';
-        messageType = 'error';
-        degenerationDetected = true;
-        degenerateStartIndex = i;
-        break; // No es necesario continuar verificando
+      // Verificar si el número aleatorio es cero
+      if (ri == 0) {
+        if (firstZeroEncountered) {
+          message = 'Secuencia degenerada: Todos los números generados son cero a partir de la posición ${i + 1}. El número cero se generó en la posición ${i + 1}.';
+          messageType = 'error';
+          degenerationDetected = true;
+          degenerateStartIndex = i;
+          break; // No es necesario continuar verificando
+        } else {
+          firstZeroEncountered = true;
+        }
+      } else {
+        // Verificar si el número aleatorio se repitió
+        if (seenNumbers.containsKey(ri)) {
+          int firstOccurrence = seenNumbers[ri]!;
+          message = 'Degeneración detectada: El número ${ri} se repitió en la posición ${i + 1}. La primera aparición fue en la posición ${firstOccurrence + 1}.';
+          messageType = 'error';
+          degenerationDetected = true;
+          degenerateStartIndex = i;
+          break; // No es necesario continuar verificando
+        }
+        seenNumbers[ri] = i; // Registrar la posición de la primera aparición
       }
     }
 
     // Mensaje si no se detectó degeneración pero se generaron números
     if (!degenerationDetected && results.isNotEmpty) {
-      message =
-          'La generación se completó sin detectar degeneración. Se generaron ${results.length} números.';
+      message = 'La generación se completó sin detectar degeneración. Se generaron ${results.length} números.';
       messageType = 'success';
     } else if (degenerationDetected && degenerateStartIndex >= 0) {
-      message =
-          'La secuencia se degeneró a partir de la posición ${degenerateStartIndex + 1}. Verifique los números generados.';
       messageType = 'error';
     }
 
