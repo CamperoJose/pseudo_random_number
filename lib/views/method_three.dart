@@ -4,6 +4,7 @@ import 'package:input_quantity/input_quantity.dart';
 import 'package:pseudo_random_number/bl/method_three_bl.dart';
 import 'package:pseudo_random_number/components/custom_summary.dart';
 import 'package:pseudo_random_number/components/custon_table_congruential.dart';
+import 'package:pseudo_random_number/components/error_alert_dialog.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
 import 'package:pseudo_random_number/components/message_display.dart';
@@ -41,6 +42,8 @@ class _MethodThreePageState extends State<MethodThreePage> {
     final int c = int.tryParse(_cController.text) ?? 0;
     final int digits = int.tryParse(_digitsController.text) ?? 4;
 
+
+
     if (seed > 0 && count > 0 && k >= 0 && c >= 0) {
       setState(() {
         var result = MethodThreeBL().generateNumbers(seed, count, k, c, digits);
@@ -49,10 +52,28 @@ class _MethodThreePageState extends State<MethodThreePage> {
         _messageType = result['message_type'];
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, ingrese valores válidos')),
-      );
+      _showErrorInputs();
     }
+
+
+  }
+
+
+
+  void _showErrorInputs() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ErrorAlertDialog(
+          title: 'Campos no válidos',
+          description: 'No se han ingresado valores en los campos de Semilla, Cantidad y constantes.',
+          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          onConfirm: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
 
   void _showFileNamePopup(VoidCallback onConfirm) {
