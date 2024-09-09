@@ -106,6 +106,36 @@ class WelcomePage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 20.0),
+                        // Botón en la parte inferior central
+                        Positioned(
+                          bottom: 30,
+                          left: MediaQuery.of(context).size.width * 0.25,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blueGrey, // Color del botón
+                              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return _buildAboutDeveloperDialog(context);
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Sobre Desarrollador',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -236,5 +266,36 @@ class WelcomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildAboutDeveloperDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text('Sobre el Desarrollador'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+
+          SizedBox(height: 20),
+          Text('Nombre: José Antonio Campero Morales'),
+          Text('Estudiante de Ingeniería de Sistemas UCB'),
+          SizedBox(height: 10),
+
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cerrar'),
+        ),
+      ],
+    );
+  }
+
+  void launchURL(String url) {
+    // Implementa la lógica para lanzar la URL (puedes usar url_launcher)
+    // import 'package:url_launcher/url_launcher.dart';
+    // launch(url);
   }
 }
