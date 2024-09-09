@@ -28,15 +28,13 @@ class MethodThreeBL {
       currentSeed = xi;
     }
 
-    Map<String, String> degenerationResult = verifyDegeneration(results);
+    Map<String, String> degenerationResult = verifyDegeneration(results, count);
     String message = degenerationResult['message']!;
     String messageType = degenerationResult['message_type']!;
 
     if (messageType == 'success' && results.isEmpty) {
       message = "No se generaron resultados.";
       messageType = 'error';
-    } else if (messageType == 'success') {
-      message = message;
     }
 
     return {
@@ -54,37 +52,32 @@ class MethodThreeBL {
     };
   }
 
-  Map<String, String> verifyDegeneration(List<Map<String, dynamic>> results) {
-    Set<int> seenNumbers = {};
+  Map<String, String> verifyDegeneration(List<Map<String, dynamic>> results, int count) {
+    Set<String> seenNumbers = {};
     String message = 'La secuencia de números generada es válida.';
     String messageType = 'success';
 
-    bool degenerationDetected = false;
-    int degenerateStartIndex = -1;
+    // Verificar repetición dentro de los primeros `count` números
+    for (int i = 0; i < count; i++) {
+      String ri = results[i]['ri'];
 
-    for (int i = 0; i < results.length; i++) {
-      int xi = results[i]['xi'];
-
-      if (seenNumbers.contains(xi)) {
-        if (i + 1 == results.length || results[i + 1]['xi'] == results[0]['xi']) {
-          message = 'La secuencia completa y es perfecta, no hay degeneración detectada.';
-          messageType = 'success';
-        } else {
-          message = 'Degeneración detectada: El número $xi se repitió en la posición ${i + 1}.';
-          messageType = 'error';
-          degenerationDetected = true;
-          degenerateStartIndex = i;
-          break;
-        }
+      if (seenNumbers.contains(ri)) {
+        message = 'Degeneración detectada: El número aleatorio $ri se repitió en la posición ${i + 1}.';
+        messageType = 'error';
+        return {
+          'message': message,
+          'message_type': messageType,
+        };
       }
-      seenNumbers.add(xi);
+      seenNumbers.add(ri);
     }
 
-    if (!degenerationDetected && results.isNotEmpty) {
-      message = 'La generación se completó sin detectar degeneración. Se generaron ${results.length -1 } números válidos.';
-      messageType = 'success';
-    } else if (degenerationDetected && degenerateStartIndex >= 0) {
-      message = 'La secuencia repite los valores desde la posición ${degenerateStartIndex + 1}. Los primeros $degenerateStartIndex números son válidos.';
+    // Verificar si el último número generado (posición `count`) es igual al primero
+    if (results[count]['ri'] != results[0]['ri']) {
+      message = 'Degeneración detectada: El último número aleatorio no coincide con el primero.';
+      messageType = 'error';
+    } else {
+      message = 'La secuencia es cíclica y no tiene degeneración. Se generaron ${count} números válidos.';
       messageType = 'success';
     }
 
