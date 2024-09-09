@@ -32,8 +32,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
     if (seed == 0 || count == 0) {
       _showErrorInputs();
       return;
-    }else if (seed.toString().length < 2) {
-      _showErrorSeed(); 
+    } else if (seed.toString().length < 2) {
+      _showErrorSeed();
     } else {
       setState(() {
         var result = MethodOneBL().generateNumbers(seed, count);
@@ -50,8 +50,10 @@ class _MethodOnePageState extends State<MethodOnePage> {
       builder: (BuildContext context) {
         return ErrorAlertDialog(
           title: 'Error en la Semilla',
-          description: 'La semilla debe tener al menos dos dígitos para generar números válidos.',
-          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          description:
+              'La semilla debe tener al menos dos dígitos para generar números válidos.',
+          imageUrl:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1725842784/nkdkukljyc9te6cgxsox.png',
           onConfirm: () {
             Navigator.of(context).pop();
           },
@@ -66,8 +68,10 @@ class _MethodOnePageState extends State<MethodOnePage> {
       builder: (BuildContext context) {
         return ErrorAlertDialog(
           title: 'Campos no válidos',
-          description: 'No se han ingresado valores en los campos de Semilla y Cantidad.',
-          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          description:
+              'No se han ingresado valores en los campos de Semilla y Cantidad.',
+          imageUrl:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1725842784/nkdkukljyc9te6cgxsox.png',
           onConfirm: () {
             Navigator.of(context).pop();
           },
@@ -85,7 +89,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
           message: 'Ingrese el nombre del archivo',
           isInput: true,
           controller: _fileNameController,
-          iconPath: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+          iconPath:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
           backgroundColor: const Color(0xFF232635),
           iconColor: Colors.white,
           onConfirm: () {
@@ -126,7 +131,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
           style: TextStyle(color: Color.fromARGB(255, 225, 224, 209)),
         ),
         backgroundColor: const Color(0xFF232635),
-        iconTheme: const IconThemeData(color: Color.fromARGB(255, 225, 224, 209)),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 225, 224, 209)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -142,7 +148,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     controller: _seedController,
                     labelText: 'Semilla',
                     hintText: 'Ingrese un número',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -153,7 +160,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     controller: _countController,
                     labelText: 'Cantidad',
                     hintText: 'Ingrese la cantidad',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -170,7 +178,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     child: MyButton(
                       onPressed: _generateNumbers,
                       labelText: 'Generar',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
                       buttonColor: const Color(0xFF232635),
                       textColor: Colors.white,
                     ),
@@ -181,7 +190,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     child: MyButton(
                       onPressed: _downloadCSVWeb,
                       labelText: 'Descargar CSV',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
                       buttonColor: const Color.fromARGB(255, 162, 27, 25),
                       textColor: Colors.white,
                     ),
@@ -192,7 +202,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     child: MyButton(
                       onPressed: _downloadExcelWeb,
                       labelText: 'Descargar Excel',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
                       buttonColor: const Color.fromARGB(255, 13, 122, 55),
                       textColor: Colors.white,
                     ),
@@ -207,7 +218,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                     child: MyButton(
                       onPressed: _generateNumbers,
                       labelText: 'Generar',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
                       buttonColor: const Color(0xFF232635),
                       textColor: Colors.white,
                     ),
@@ -219,7 +231,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                         child: MyButton(
                           onPressed: _downloadCSVWeb,
                           labelText: 'Descargar CSV',
-                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
                           buttonColor: const Color.fromARGB(255, 162, 27, 25),
                           textColor: Colors.white,
                         ),
@@ -229,7 +242,8 @@ class _MethodOnePageState extends State<MethodOnePage> {
                         child: MyButton(
                           onPressed: _downloadExcelWeb,
                           labelText: 'Descargar Excel',
-                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
                           buttonColor: const Color.fromARGB(255, 13, 122, 55),
                           textColor: Colors.white,
                         ),
@@ -250,7 +264,9 @@ class _MethodOnePageState extends State<MethodOnePage> {
             const SizedBox(height: 20.0),
             Expanded(
               child: Center(
-                child: CustomTable(results: _results), // Usando el nuevo componente CustomTable
+                child: CustomTable(
+                    results:
+                        _results), // Usando el nuevo componente CustomTable
               ),
             ),
           ],

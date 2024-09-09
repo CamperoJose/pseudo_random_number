@@ -4,6 +4,7 @@ import 'package:input_quantity/input_quantity.dart';
 import 'package:pseudo_random_number/bl/method_four_bl.dart';
 import 'package:pseudo_random_number/components/custom_summary_mul.dart';
 import 'package:pseudo_random_number/components/custon_table_congruential.dart';
+import 'package:pseudo_random_number/components/error_alert_dialog.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
 import 'package:pseudo_random_number/components/message_display.dart';
@@ -54,6 +55,11 @@ class _MethodFourPageState extends State<MethodFourPage> {
     }
 
     if (seed > 0 && count > 0 && k >= 0 && c >= 0) {
+      // verificar si semilla es impar:
+      if (seed % 2 == 0) {
+        _notOdd();
+        return;
+      }
       setState(() {
         var result =
             MethodFourBL().generateNumbers(seed, count, k, digits, opSelected);
@@ -62,10 +68,44 @@ class _MethodFourPageState extends State<MethodFourPage> {
         _messageType = result['message_type'];
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, ingrese valores válidos')),
-      );
+      _showErrorInputs;
     }
+  }
+
+  void _showErrorInputs() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ErrorAlertDialog(
+          title: 'Campos no válidos',
+          description:
+              'No se han ingresado valores en los campos de Semilla y Cantidad.',
+          imageUrl:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1725842784/nkdkukljyc9te6cgxsox.png',
+          onConfirm: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
+  void _notOdd() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ErrorAlertDialog(
+          title: 'Valor de X0 no es válido',
+          description:
+              'El valor de X0 debe ser un número entero positivo IMPAR.',
+          imageUrl:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1725842784/nkdkukljyc9te6cgxsox.png',
+          onConfirm: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
 
   void _showFileNamePopup(VoidCallback onConfirm) {
@@ -203,20 +243,22 @@ class _MethodFourPageState extends State<MethodFourPage> {
                                 child: Container(
                                   padding: EdgeInsets.all(1),
                                   decoration: BoxDecoration(
-
                                     borderRadius: BorderRadius.circular(15),
                                     gradient: const LinearGradient(
-          colors: [Color(0xFFF5F5DC), Color(0xFFEDEBE0)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            offset: Offset(0, 4),
-            blurRadius: 6.0,
-          ),
-        ],
+                                      colors: [
+                                        Color(0xFFF5F5DC),
+                                        Color(0xFFEDEBE0)
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 4),
+                                        blurRadius: 6.0,
+                                      ),
+                                    ],
                                   ),
                                   child: Column(
                                     children: [

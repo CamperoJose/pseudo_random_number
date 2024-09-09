@@ -44,14 +44,16 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
     }
   }
 
-    void _showErrorSeed() {
+  void _showErrorSeed() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return ErrorAlertDialog(
           title: 'Error en la Semilla',
-          description: 'Las semillas debe tener al menos dos dígitos para generar números válidos.',
-          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          description:
+              'Las semillas debe tener al menos dos dígitos para generar números válidos.',
+          imageUrl:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1725842784/nkdkukljyc9te6cgxsox.png',
           onConfirm: () {
             Navigator.of(context).pop();
           },
@@ -66,8 +68,10 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
       builder: (BuildContext context) {
         return ErrorAlertDialog(
           title: 'Campos no válidos',
-          description: 'No se han ingresado valores en los campos de Semilla y Cantidad.',
-          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          description:
+              'No se han ingresado valores en los campos de Semilla y Cantidad.',
+          imageUrl:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1725842784/nkdkukljyc9te6cgxsox.png',
           onConfirm: () {
             Navigator.of(context).pop();
           },
@@ -88,7 +92,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
               const Text('Ingrese el nombre del archivo'),
               TextField(
                 controller: _fileNameController,
-                decoration: const InputDecoration(hintText: 'Nombre del archivo'),
+                decoration:
+                    const InputDecoration(hintText: 'Nombre del archivo'),
               ),
             ],
           ),
@@ -142,7 +147,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
           style: TextStyle(color: Color.fromARGB(255, 225, 224, 209)),
         ),
         backgroundColor: const Color(0xFF232635),
-        iconTheme: const IconThemeData(color: Color.fromARGB(255, 225, 224, 209)),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 225, 224, 209)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -159,7 +165,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                       controller: _seedController1,
                       labelText: 'Semilla 1',
                       hintText: 'Ingrese la primera semilla',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -170,7 +177,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                       controller: _seedController2,
                       labelText: 'Semilla 2',
                       hintText: 'Ingrese la segunda semilla',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -181,7 +189,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                       controller: _countController,
                       labelText: 'Cantidad',
                       hintText: 'Ingrese la cantidad',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -198,7 +207,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                           controller: _seedController1,
                           labelText: 'Semilla 1',
                           hintText: 'Ingrese la primera semilla',
-                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -209,7 +219,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                           controller: _seedController2,
                           labelText: 'Semilla 2',
                           hintText: 'Ingrese la segunda semilla',
-                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -220,7 +231,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     controller: _countController,
                     labelText: 'Cantidad',
                     hintText: 'Ingrese la cantidad',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
                     keyboardType: TextInputType.number,
                   ),
                 ],
@@ -232,7 +244,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     controller: _seedController1,
                     labelText: 'Semilla 1',
                     hintText: 'Ingrese la primera semilla',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
                     keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 10.0),
@@ -240,7 +253,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     controller: _seedController2,
                     labelText: 'Semilla 2',
                     hintText: 'Ingrese la segunda semilla',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/gbaik513uv0epoapmsby.png',
                     keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 10.0),
@@ -248,7 +262,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     controller: _countController,
                     labelText: 'Cantidad',
                     hintText: 'Ingrese la cantidad',
-                    imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
+                    imageUrl:
+                        'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/mbpo7ijdohdc2anfnj86.png',
                     keyboardType: TextInputType.number,
                   ),
                 ],
@@ -264,7 +279,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     child: MyButton(
                       onPressed: _generateNumbers,
                       labelText: 'Generar',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
                       buttonColor: const Color(0xFF232635),
                       textColor: Colors.white,
                     ),
@@ -275,7 +291,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     child: MyButton(
                       onPressed: _downloadCSVWeb,
                       labelText: 'Descargar CSV',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
                       buttonColor: const Color.fromARGB(255, 162, 27, 25),
                       textColor: Colors.white,
                     ),
@@ -286,7 +303,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     child: MyButton(
                       onPressed: _downloadExcelWeb,
                       labelText: 'Descargar Excel',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
                       buttonColor: const Color.fromARGB(255, 13, 122, 55),
                       textColor: Colors.white,
                     ),
@@ -301,7 +319,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                     child: MyButton(
                       onPressed: _generateNumbers,
                       labelText: 'Generar',
-                      imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
+                      imageUrl:
+                          'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/zon4ufqykb2cmhrh6v5t.png',
                       buttonColor: const Color(0xFF232635),
                       textColor: Colors.white,
                     ),
@@ -313,7 +332,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                         child: MyButton(
                           onPressed: _downloadCSVWeb,
                           labelText: 'Descargar CSV',
-                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qw6aq26zodhpxalwyys0.png',
                           buttonColor: const Color.fromARGB(255, 162, 27, 25),
                           textColor: Colors.white,
                         ),
@@ -323,7 +343,8 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
                         child: MyButton(
                           onPressed: _downloadExcelWeb,
                           labelText: 'Descargar Excel',
-                          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
+                          imageUrl:
+                              'https://res.cloudinary.com/deaodcmae/image/upload/v1724986930/qfhrgkssikmsgncohymd.png',
                           buttonColor: const Color.fromARGB(255, 13, 122, 55),
                           textColor: Colors.white,
                         ),
@@ -345,7 +366,9 @@ class _MethodTwoPageState extends State<MethodTwoPage> {
             const SizedBox(height: 20.0),
             Expanded(
               child: Center(
-                child: CustomTable(results: _results), // Usando el nuevo componente CustomTable
+                child: CustomTable(
+                    results:
+                        _results), // Usando el nuevo componente CustomTable
               ),
             ),
           ],

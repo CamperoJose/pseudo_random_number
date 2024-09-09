@@ -42,8 +42,6 @@ class _MethodThreePageState extends State<MethodThreePage> {
     final int c = int.tryParse(_cController.text) ?? 0;
     final int digits = int.tryParse(_digitsController.text) ?? 4;
 
-
-
     if (seed > 0 && count > 0 && k >= 0 && c >= 0) {
       setState(() {
         var result = MethodThreeBL().generateNumbers(seed, count, k, c, digits);
@@ -54,11 +52,7 @@ class _MethodThreePageState extends State<MethodThreePage> {
     } else {
       _showErrorInputs();
     }
-
-
   }
-
-
 
   void _showErrorInputs() {
     showDialog(
@@ -66,8 +60,10 @@ class _MethodThreePageState extends State<MethodThreePage> {
       builder: (BuildContext context) {
         return ErrorAlertDialog(
           title: 'Campos no válidos',
-          description: 'No se han ingresado valores en los campos de Semilla, Cantidad y constantes.',
-          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          description:
+              'No se han ingresado valores en los campos de Semilla, Cantidad y constantes.',
+          imageUrl:
+              'https://res.cloudinary.com/deaodcmae/image/upload/v1725842784/nkdkukljyc9te6cgxsox.png',
           onConfirm: () {
             Navigator.of(context).pop();
           },
@@ -235,7 +231,9 @@ class _MethodThreePageState extends State<MethodThreePage> {
                                 textAlign: TextAlign
                                     .center, // Centra el texto dentro de su espacio
                               ),
-                              const SizedBox(width: 10), // Espaciado entre el texto y el InputQty
+                              const SizedBox(
+                                  width:
+                                      10), // Espaciado entre el texto y el InputQty
                               InputQty(
                                 initVal:
                                     int.tryParse(_digitsController.text) ?? 4,
@@ -332,46 +330,45 @@ class _MethodThreePageState extends State<MethodThreePage> {
                       ),
                     ],
                   ),
-
-                                          Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment
-                                .center, // Centra los elementos en la fila
-                            mainAxisSize: MainAxisSize
-                                .min, // Ajusta el tamaño al contenido
-                            children: [
-                              const Text(
-                                "Cantidad de decimales a generar:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign
-                                    .center, // Centra el texto dentro de su espacio
-                              ),
-                              const SizedBox(width: 10), // Espaciado entre el texto y el InputQty
-                              InputQty(
-                                initVal:
-                                    int.tryParse(_digitsController.text) ?? 4,
-                                minVal: 2,
-                                maxVal: 10,
-                                onQtyChanged: (value) {
-                                  _digitsController.text = value.toString();
-                                },
-                                decoration: const QtyDecorationProps(
-                                  isBordered: false,
-                                  minusBtn:
-                                      Icon(Icons.remove, color: Colors.red),
-                                  plusBtn: Icon(Icons.add, color: Colors.green),
-                                  width: 20,
-                                ),
-                                qtyFormProps: const QtyFormProps(
-                                  enableTyping: true,
-                                ),
-                              ),
-                            ],
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .center, // Centra los elementos en la fila
+                      mainAxisSize:
+                          MainAxisSize.min, // Ajusta el tamaño al contenido
+                      children: [
+                        const Text(
+                          "Cantidad de decimales a generar:",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign
+                              .center, // Centra el texto dentro de su espacio
+                        ),
+                        const SizedBox(
+                            width:
+                                10), // Espaciado entre el texto y el InputQty
+                        InputQty(
+                          initVal: int.tryParse(_digitsController.text) ?? 4,
+                          minVal: 2,
+                          maxVal: 10,
+                          onQtyChanged: (value) {
+                            _digitsController.text = value.toString();
+                          },
+                          decoration: const QtyDecorationProps(
+                            isBordered: false,
+                            minusBtn: Icon(Icons.remove, color: Colors.red),
+                            plusBtn: Icon(Icons.add, color: Colors.green),
+                            width: 20,
+                          ),
+                          qtyFormProps: const QtyFormProps(
+                            enableTyping: true,
                           ),
                         ),
-                        const SizedBox(height: 5.0),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 5.0),
                   const SizedBox(height: 3.0),
                   MySummary(
                     seed: seedNotifier,
@@ -450,8 +447,6 @@ class _MethodThreePageState extends State<MethodThreePage> {
                       ),
                     ],
                   ),
-
-                  
                   const SizedBox(height: 3.0),
                   MyButton(
                     onPressed: _downloadExcelWeb,
