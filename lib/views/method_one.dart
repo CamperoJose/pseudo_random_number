@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_random_number/bl/method_one_bl.dart';
 import 'package:pseudo_random_number/components/custom_pop_up.dart';
+import 'package:pseudo_random_number/components/error_alert_dialog.dart';
 import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
 import 'package:pseudo_random_number/components/custom_table.dart';
-import 'package:pseudo_random_number/components/message_display.dart'; 
+import 'package:pseudo_random_number/components/message_display.dart';
 import 'package:pseudo_random_number/utils/file_download.dart';
 
 class MethodOnePage extends StatefulWidget {
@@ -28,18 +29,51 @@ class _MethodOnePageState extends State<MethodOnePage> {
     final int seed = int.tryParse(_seedController.text) ?? 0;
     final int count = int.tryParse(_countController.text) ?? 0;
 
-    if (seed > 0 && count > 0 && seed.toString().length >= 2) {
+    if (seed == 0 || count == 0) {
+      _showErrorInputs();
+      return;
+    }else if (seed.toString().length < 2) {
+      _showErrorSeed(); 
+    } else {
       setState(() {
         var result = MethodOneBL().generateNumbers(seed, count);
         _results = result['results'];
         _message = result['message'];
         _messageType = result['message_type'];
       });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, ingrese valores válidos')),
-      );
     }
+  }
+
+  void _showErrorSeed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ErrorAlertDialog(
+          title: 'Error en la Semilla',
+          description: 'La semilla debe tener al menos dos dígitos para generar números válidos.',
+          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          onConfirm: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
+  void _showErrorInputs() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ErrorAlertDialog(
+          title: 'Campos no válidos',
+          description: 'No se han ingresado valores en los campos de Semilla y Cantidad.',
+          imageUrl: 'https://res.cloudinary.com/deaodcmae/image/upload/v1725841815/qznpnmx8bcn2yb9mqn0d.png',
+          onConfirm: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
 
   void _showFileNamePopup(VoidCallback onConfirm) {
