@@ -55,7 +55,7 @@ Map<String, dynamic> maximizarFuncion({
   for (int CIT = 0; CIT < NMI; CIT++) {
     // Generar valores aleatorios dentro de los límites de las restricciones
     double rX1C = generarValorAleatorio(x1Min, x1Max);
-    double rX2C = roundDouble(generarValorAleatorio(x2Min, x2Max)).toDouble(); // Redondeado a entero
+    double rX2C = generarValorAleatorio(x2Min, x2Max).ceilToDouble();
     double rX3C = generarValorAleatorio(x3Min, x3Max);
 
     // Inicializar ZC para cada iteración
