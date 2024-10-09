@@ -3,6 +3,8 @@ import 'package:pseudo_random_number/views/method_four.dart';
 import 'package:pseudo_random_number/views/method_one.dart';
 import 'package:pseudo_random_number/views/method_three.dart';
 import 'package:pseudo_random_number/views/method_two.dart';
+import 'package:pseudo_random_number/views/flow_chart/maximize_problem.dart';
+
 
 class WelcomePage extends StatelessWidget {
   @override
@@ -40,7 +42,7 @@ class WelcomePage extends StatelessWidget {
                           padding: EdgeInsets.only(top: 80.0, bottom: 20.0),
                           child: Center(
                             child: Text(
-                              'Generador de Números Pseudoaleatorios v1.0.1',
+                              'Modelado, Dinámica de Sistemas y Simulación',
                               style: TextStyle(
                                 fontSize: 42.0,
                                 fontWeight: FontWeight.w900,
@@ -105,8 +107,53 @@ class WelcomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 40.0),
                         // Botón en la parte inferior central
+
+                        Container(
+                          padding: EdgeInsets.all(25.0),
+                          margin: EdgeInsets.symmetric(horizontal: 30.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 200, 198, 198)
+                                .withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(25.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 10,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20.0),
+                              if (constraints.maxWidth > 600)
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: _buildMethodsColumn2(context),
+                                    ),
+                                    const SizedBox(width: 40.0),
+                                    Expanded(
+                                      child: _buildInfoColumn2(),
+                                    ),
+                                  ],
+                                )
+                              else
+                                Column(
+                                  children: [
+                                    _buildMethodsColumn2(context),
+                                    const SizedBox(height: 20.0),
+                                    _buildInfoColumn2(),
+                                  ],
+                                ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20.0),
+
                         Positioned(
                           bottom: 30,
                           left: MediaQuery.of(context).size.width * 0.25,
@@ -193,6 +240,52 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
+  Widget _buildInfoColumn2() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text(
+        '¿Qué es la construcción de modelos de simulación?',
+        style: TextStyle(
+          fontSize: 26.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+      const SizedBox(height: 20.0),
+      const Text(
+        'La construcción de modelos de simulación implica el desarrollo de representaciones matemáticas o computacionales de sistemas reales. Estos modelos permiten analizar el comportamiento y la dinámica de dichos sistemas bajo diferentes condiciones, sin la necesidad de realizar experimentos físicos.',
+        style: TextStyle(
+          fontSize: 18.0,
+          color: Colors.white70,
+          height: 1.5,
+        ),
+        textAlign: TextAlign.justify,
+      ),
+      const SizedBox(height: 20.0),
+      const Text(
+        '¿Por qué son importantes los modelos de simulación?',
+        style: TextStyle(
+          fontSize: 26.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+      const SizedBox(height: 20.0),
+      const Text(
+        'Los modelos de simulación son fundamentales para prever y optimizar el comportamiento de sistemas complejos en áreas como ingeniería, economía y ciencias sociales. Permiten realizar estudios que serían costosos o inviables en el mundo real, brindando herramientas para tomar decisiones informadas y mejorar procesos.',
+        style: TextStyle(
+          fontSize: 18.0,
+          color: Colors.white70,
+          height: 1.5,
+        ),
+        textAlign: TextAlign.justify,
+      ),
+    ],
+  );
+}
+
+
   Widget _buildMethodsColumn(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,6 +329,53 @@ class WelcomePage extends StatelessWidget {
       ],
     );
   }
+
+
+Widget _buildMethodsColumn2(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      const Text(
+        'Escoja una opción',
+        style: TextStyle(
+          fontSize: 26.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+      const SizedBox(height: 20.0),
+      _buildButton(
+        context,
+        'Cálculo de Interes',
+        MethodOnePage(),
+        const Color(0xFFe63946), // Rojo Coral Vibrante
+      ),
+      const SizedBox(height: 10.0),
+      _buildButton(
+        context,
+        'Estimación de población',
+        MethodTwoPage(),
+        const Color(0xFFf4a261), // Naranja Arena
+      ),
+      const SizedBox(height: 10.0),
+      _buildButton(
+        context,
+        'Juego de Azar',
+        MethodThreePage(),
+        const Color(0xFFe6a746), // Verde Agua
+      ),
+      const SizedBox(height: 10.0),
+      _buildButton(
+        context,
+        'Problema de Maximización',
+        const MaximizeProblem(),
+        const Color(0xFF2a9d8f), // Azul Profundo
+      ),
+    ],
+  );
+}
+
+
 
   Widget _buildButton(BuildContext context, String text, Widget page, Color color) {
     return ElevatedButton(

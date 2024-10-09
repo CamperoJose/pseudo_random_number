@@ -30,6 +30,8 @@ dependencies:
   flutter_animated_button: ^2.0.3
   flutter_math_fork: ^0.7.2
   url_launcher: ^6.2.4
+  function_tree: ^0.9.1
+  math_expressions: ^2.6.0
 
 
 dev_dependencies:
