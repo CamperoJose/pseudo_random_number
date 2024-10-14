@@ -77,7 +77,7 @@ class MethodThreeBL {
       message = 'Degeneración detectada: El último número aleatorio no coincide con el primero.';
       messageType = 'error';
     } else {
-      message = 'La secuencia es cíclica y no tiene degeneración. Se generaron ${count} números válidos.';
+      message = 'La secuencia es cíclica y no tiene degeneración. Se generaron $count números válidos.';
       messageType = 'success';
     }
 

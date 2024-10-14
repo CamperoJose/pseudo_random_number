@@ -33,7 +33,7 @@ class MyInput extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(15.0),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             offset: Offset(0, 4),
@@ -45,7 +45,7 @@ class MyInput extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xFF232635),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15.0),
@@ -65,7 +65,7 @@ class MyInput extends StatelessWidget {
               child: TextField(
                 controller: controller,
                 keyboardType: keyboardType,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color(0xFF333333),
                   fontWeight: FontWeight.w500,
                   fontSize: 16.0,
@@ -76,19 +76,19 @@ class MyInput extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: labelText,
                   hintText: hintText,
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Color(0xFF444444),
                     fontSize: 16.0,
                   ),
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     color: Color(0xFF666666),
                     fontSize: 14.0,
                   ),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0, horizontal: 8.0),
                 ),
-                cursorColor: Color(0xFF232635),
+                cursorColor: const Color(0xFF232635),
                 cursorWidth: 2.0,
                 onChanged: onChanged,
               ),

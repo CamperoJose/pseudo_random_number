@@ -86,7 +86,7 @@ class MethodOneBL {
       // Verificar si el número generado es cero
       if (ri == 0) {
         if (firstZeroEncountered) {
-          message = 'Secuencia degenerada: Todos los números generados son cero a partir de la posición ${i + 1}. El número cero se generó en la posición ${i}.';
+          message = 'Secuencia degenerada: Todos los números generados son cero a partir de la posición ${i + 1}. El número cero se generó en la posición $i.';
           messageType = 'error';
           degenerationDetected = true;
           degenerateStartIndex = i;

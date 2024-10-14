@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomTable extends StatelessWidget {
   final List<Map<String, dynamic>> results;
 
-  CustomTable({required this.results});
+  const CustomTable({super.key, required this.results});
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +27,19 @@ class CustomTable extends StatelessWidget {
                       color: Colors.black.withOpacity(0.1),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: DataTable(
-                  headingRowColor: MaterialStateProperty.all(Color(0xFF232635)),
-                  dataRowColor: MaterialStateProperty.all(Colors.white),
+                  headingRowColor: WidgetStateProperty.all(const Color(0xFF232635)),
+                  dataRowColor: WidgetStateProperty.all(Colors.white),
                   columnSpacing: 30.0,
                   horizontalMargin: 20.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  columns: [
+                  columns: const [
                     DataColumn(
                       label: Text(
                         'i',
@@ -77,25 +77,25 @@ class CustomTable extends StatelessWidget {
                       cells: [
                         DataCell(
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               result['i'].toString(),
-                              style: TextStyle(fontSize: 18.0),
+                              style: const TextStyle(fontSize: 18.0),
                             ),
                           ),
                         ),
                         DataCell(
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               result['xi'].toString(),
-                              style: TextStyle(fontSize: 18.0),
+                              style: const TextStyle(fontSize: 18.0),
                             ),
                           ),
                         ),
                         DataCell(
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               result['ri'].toString(),
                               style: TextStyle(

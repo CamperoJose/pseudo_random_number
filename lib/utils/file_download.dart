@@ -29,7 +29,7 @@ void downloadExcelWeb(List<Map<String, dynamic>> results, String fileName) {
   final sheet = excel['Sheet1'];
 
   sheet.appendRow(['i', 'Yi', 'Operación', 'X1', 'Ri']);
-  results.forEach((result) {
+  for (var result in results) {
     sheet.appendRow([
       result['i'],
       result['yi'],
@@ -37,7 +37,7 @@ void downloadExcelWeb(List<Map<String, dynamic>> results, String fileName) {
       result['x1'],
       result['ri']
     ]);
-  });
+  }
 
   final bytes = excel.encode();
   final base64Str = base64.encode(bytes!);

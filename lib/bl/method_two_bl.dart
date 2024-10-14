@@ -96,7 +96,7 @@ class MethodTwoBL {
         // Verificar si el número aleatorio se repitió
         if (seenNumbers.containsKey(ri)) {
           int firstOccurrence = seenNumbers[ri]!;
-          message = 'Degeneración detectada: El número ${ri} se repitió en la posición ${i + 1}. La primera aparición fue en la posición ${firstOccurrence + 1}.';
+          message = 'Degeneración detectada: El número $ri se repitió en la posición ${i + 1}. La primera aparición fue en la posición ${firstOccurrence + 1}.';
           messageType = 'error';
           degenerationDetected = true;
           degenerateStartIndex = i;

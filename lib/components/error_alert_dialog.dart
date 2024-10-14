@@ -38,11 +38,11 @@ class ErrorAlertDialog extends StatelessWidget {
             color: Colors.white,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(20.0),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
                 blurRadius: 10.0,
-                offset: const Offset(0.0, 10.0),
+                offset: Offset(0.0, 10.0),
               ),
             ],
           ),
@@ -78,7 +78,7 @@ class ErrorAlertDialog extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
                 ),
-                child: Text(
+                child: const Text(
                   'Entendido',
                   style: TextStyle(
                     fontSize: 18.0,

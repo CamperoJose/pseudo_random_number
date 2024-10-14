@@ -73,7 +73,7 @@ class _MaximizeProblemState extends State<MaximizeProblem> {
             child: TextField(
               controller: controller,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
               ),

@@ -204,7 +204,7 @@ class MySummary extends StatelessWidget {
                 style: TextStyle(
                   color: isValidNumber
                       ? (isPrimeNumber ? Colors.green : Colors.red)
-                      : Color(0xFF333333),
+                      : const Color(0xFF333333),
                   fontWeight: FontWeight.w500,
                   fontSize: 14.0,
                 ),

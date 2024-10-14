@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:pseudo_random_number/bl/method_four_bl.dart';
@@ -9,9 +8,7 @@ import 'package:pseudo_random_number/components/my_button.dart';
 import 'package:pseudo_random_number/components/my_input.dart';
 import 'package:pseudo_random_number/components/message_display.dart';
 import 'package:pseudo_random_number/utils/file_download.dart';
-import 'package:flutter_math_fork/ast.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_math_fork/tex.dart';
 
 class MethodFourPage extends StatefulWidget {
   const MethodFourPage({super.key});
@@ -241,7 +238,7 @@ class _MethodFourPageState extends State<MethodFourPage> {
                             Expanded(
                               child: Center(
                                 child: Container(
-                                  padding: EdgeInsets.all(1),
+                                  padding: const EdgeInsets.all(1),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     gradient: const LinearGradient(
@@ -252,7 +249,7 @@ class _MethodFourPageState extends State<MethodFourPage> {
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     ),
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
                                         color: Colors.black26,
                                         offset: Offset(0, 4),
@@ -284,7 +281,7 @@ class _MethodFourPageState extends State<MethodFourPage> {
                                               contentPadding: EdgeInsets.zero,
                                               title: Math.tex(
                                                 r'a=3+8k',
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.black87),
                                               ),
@@ -308,7 +305,7 @@ class _MethodFourPageState extends State<MethodFourPage> {
                                               contentPadding: EdgeInsets.zero,
                                               title: Math.tex(
                                                 r'a=5+8k',
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.black87),
                                               ),
