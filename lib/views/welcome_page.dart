@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pseudo_random_number/views/flow_chart/poblation_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/egg_chicken_problem.dart';
 import 'package:pseudo_random_number/views/method_four.dart';
 import 'package:pseudo_random_number/views/method_one.dart';
@@ -320,16 +321,16 @@ Widget _buildMethodsColumn2(BuildContext context) {
       const SizedBox(height: 20.0),
       _buildButton(
         context,
-        'Cálculo de Interes',
-        const MethodOnePage(),
+        'Cálculo DPF',
+        PoblationView(),
         const Color(0xFFe63946), // Rojo Coral Vibrante
       ),
       const SizedBox(height: 10.0),
       _buildButton(
         context,
         'Estimación de población',
-        const MethodTwoPage(),
-        const Color(0xFFf4a261), // Naranja Arena
+        PoblationView(),
+        const Color.fromARGB(255, 80, 94, 185), // Naranja Arena
       ),
       const SizedBox(height: 10.0),
       _buildButton(
