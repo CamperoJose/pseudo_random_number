@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pseudo_random_number/views/flow_chart/clients_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/craps_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/dpf_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/poblation_view.dart';
@@ -347,6 +348,14 @@ Widget _buildMethodsColumn2(BuildContext context) {
         'Problema de Maximización',
         const MaximizeProblem(),
         const Color(0xFF2a9d8f), // Azul Profundo
+      ),
+
+      const SizedBox(height: 10.0),
+      _buildButton(
+        context,
+        'LLegada de Clientes',
+        ClientsView(),
+        const Color.fromARGB(255, 89, 160, 53), // Azul Profundo
       ),
 
       const SizedBox(height: 10.0),
