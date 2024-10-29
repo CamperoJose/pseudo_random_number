@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pseudo_random_number/views/flow_chart/craps_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/dpf_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/poblation_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/egg_chicken_problem.dart';
@@ -336,8 +337,8 @@ Widget _buildMethodsColumn2(BuildContext context) {
       const SizedBox(height: 10.0),
       _buildButton(
         context,
-        'Juego de Azar',
-        const MethodThreePage(),
+        'Juego de Craps',
+        CrapsView(),
         const Color(0xFFe6a746), // Verde Agua
       ),
       const SizedBox(height: 10.0),
