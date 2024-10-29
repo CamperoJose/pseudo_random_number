@@ -18,8 +18,10 @@ class _EggSimulationState extends State<EggSimulation> {
   // Resultados por simulación
   List<Map<String, dynamic>> simulationResults = [];
   double? totalNetGain;
-  double? avgCTPV;
-  double? avgCTPM;
+  double? avgNetGain;
+  double? avgEggs;
+  double? avgChickensAlive;
+  double? avgChickensDead;
 
   int selectedSimulation = 0;
 
@@ -34,8 +36,10 @@ class _EggSimulationState extends State<EggSimulation> {
       );
       simulationResults = results['simulations'];
       totalNetGain = results['totalNetGain'];
-      avgCTPV = results['avgCTPV'];
-      avgCTPM = results['avgCTPM'];
+      avgNetGain = results['avgNetGain'];
+      avgEggs = results['avgEggs'];
+      avgChickensAlive = results['avgChickensAlive'];
+      avgChickensDead = results['avgChickensDead'];
     });
   }
 
@@ -49,9 +53,8 @@ class _EggSimulationState extends State<EggSimulation> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Panel izquierdo - Inputs de simulación
+            // Panel izquierdo - Inputs de simulación (1/4 de la pantalla)
             Expanded(
               flex: 1,
               child: Container(
@@ -82,7 +85,7 @@ class _EggSimulationState extends State<EggSimulation> {
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
                       onPressed: calculateSimulations,
-                      icon: Icon(Icons.calculate),
+                      icon: const Icon(Icons.calculate),
                       label: const Text('Calcular Simulaciones'),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -94,9 +97,9 @@ class _EggSimulationState extends State<EggSimulation> {
               ),
             ),
             const SizedBox(width: 20),
-            // Panel derecho - Resultados
+            // Panel derecho - Resultados (3/4 de la pantalla)
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -105,44 +108,75 @@ class _EggSimulationState extends State<EggSimulation> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 10),
-                  if (totalNetGain != null) Text('Ganancia Neta Total: $totalNetGain Bs'),
-                  if (avgCTPV != null) Text('CTPV Promedio: $avgCTPV Bs'),
-                  if (avgCTPM != null) Text('CTPM Promedio: $avgCTPM Bs'),
+                  if (avgNetGain != null) Text('Ganancia Neta Promedio: $avgNetGain Bs'),
+                  if (avgEggs != null) Text('Promedio de Huevos por Simulación: $avgEggs'),
+                  if (avgChickensAlive != null) Text('Promedio de Pollos Vivos: $avgChickensAlive'),
+                  if (avgChickensDead != null) Text('Promedio de Pollos Muertos: $avgChickensDead'),
                   const SizedBox(height: 20),
-                  const Divider(),
                   const Text(
-                    'Resultados por Simulación',
+                    'Resultados Individuales por Simulación',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 10),
+                  _buildSimulationDropdown(),
+                  const SizedBox(height: 20),
                   if (simulationResults.isNotEmpty)
-                    DropdownButton<int>(
-                      value: selectedSimulation,
-                      items: List.generate(
-                        simulationResults.length,
-                        (index) => DropdownMenuItem(
-                          value: index,
-                          child: Text('Simulación ${index + 1}'),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedSimulation = value!;
-                        });
-                      },
+                    const Text(
+                      'Detalles de la Simulación Seleccionada',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
+                  const SizedBox(height: 10),
                   if (simulationResults.isNotEmpty)
                     Expanded(
                       child: ListView.builder(
                         itemCount: simulationResults[selectedSimulation]['dias'].length,
                         itemBuilder: (context, index) {
-                          final dia = simulationResults[selectedSimulation]['dias'][index];
+                          var dayResult = simulationResults[selectedSimulation]['dias'][index];
                           return Card(
-                            child: ListTile(
-                              title: Text('Día ${index + 1}'),
-                              subtitle: Text(
-                                'Ganancia Huevos: ${dia['gananciaHuevos']} Bs, Ganancia Pollos: ${dia['gananciaPollos']} Bs\n'
-                                'Costo Huevos: ${dia['costoHuevos']} Bs, Costo Pollos: ${dia['costoPollos']} Bs',
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Día ${dayResult['dia']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.blueAccent,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _buildDetailRow(
+                                    'Huevos:',
+                                    '${dayResult['huevos']}',
+                                    Icons.egg_alt,
+                                    Colors.orange,
+                                  ),
+                                  _buildDetailRow(
+                                    'Pollos Vivos:',
+                                    '${dayResult['pollosVivos']}',
+                                    Icons.check_circle,
+                                    Colors.green,
+                                  ),
+                                  _buildDetailRow(
+                                    'Pollos Muertos:',
+                                    '${dayResult['pollosMuertos']}',
+                                    Icons.cancel,
+                                    Colors.red,
+                                  ),
+                                  _buildDetailRow(
+                                    'Huevos No Rotos:',
+                                    '${dayResult['huevosNoRotos']}',
+                                    Icons.egg,
+                                    Colors.yellow,
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -158,19 +192,55 @@ class _EggSimulationState extends State<EggSimulation> {
     );
   }
 
+  // Campo de texto para los parámetros de simulación
   Widget _buildInputField(String label, TextEditingController controller) {
-    return Column(
-      children: [
-        TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            labelText: label,
-            border: OutlineInputBorder(),
-          ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
         ),
-        const SizedBox(height: 10),
-      ],
+      ),
+    );
+  }
+
+  // Dropdown para seleccionar la simulación a mostrar
+  Widget _buildSimulationDropdown() {
+    return DropdownButton<int>(
+      value: selectedSimulation,
+      onChanged: (int? newValue) {
+        setState(() {
+          selectedSimulation = newValue!;
+        });
+      },
+      items: List.generate(simulationResults.length, (index) {
+        return DropdownMenuItem<int>(
+          value: index,
+          child: Text('Simulación ${simulationResults[index]['simulacion']}'),
+        );
+      }),
+    );
+  }
+
+  // Función para construir una fila de detalle de simulación
+  Widget _buildDetailRow(String label, String value, IconData icon, Color iconColor) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          Icon(icon, color: iconColor),
+          const SizedBox(width: 10),
+          Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          Text(value),
+        ],
+      ),
     );
   }
 }
