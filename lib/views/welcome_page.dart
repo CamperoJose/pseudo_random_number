@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pseudo_random_number/views/flow_chart/dpf_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/poblation_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/egg_chicken_problem.dart';
 import 'package:pseudo_random_number/views/method_four.dart';
@@ -322,8 +323,8 @@ Widget _buildMethodsColumn2(BuildContext context) {
       _buildButton(
         context,
         'Cálculo DPF',
-        PoblationView(),
-        const Color(0xFFe63946), // Rojo Coral Vibrante
+        DpfView(),
+        const Color.fromARGB(255, 189, 86, 95), // Rojo Coral Vibrante
       ),
       const SizedBox(height: 10.0),
       _buildButton(
