@@ -149,19 +149,35 @@ class _ClientsViewState extends State<ClientsView> {
           SizedBox(height: 20),
 
           //Tabla con inputs de probabilidad de compra por cliente:
-          Text(
-            'Probabilidad de Compra por Cliente',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-
-          _buildInputField(
-              'Artículo 1', _art1, 'Ej: 0.2'),
-          _buildInputField(
-              'Artículo 2', _art2, 'Ej: 0.3'),
-          _buildInputField(
-              'Artículo 3', _art3, 'Ej: 0.4'),
-          _buildInputField(
-              'Artículo 4', _art4, 'Ej: 0.1'),
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      'Probabilidad de Cantidad de Productos Comprados por Cliente',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    SizedBox(height: 8),
+    Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FlexColumnWidth(1),
+        1: FlexColumnWidth(1),
+        2: FlexColumnWidth(1),
+        3: FlexColumnWidth(1),
+      },
+      children: [
+        TableRow(
+          children: [
+            _buildInputField('0 Artículos', _art1, 'Ej: 0.2'),
+            _buildInputField('1 Artículo', _art2, 'Ej: 0.3'),
+            _buildInputField('2 Artículos', _art3, 'Ej: 0.4'),
+            _buildInputField('3 Artículos', _art4, 'Ej: 0.1'),
+          ],
+        ),
+      ],
+    ),
+  ],
+),
 
 
           Row(
@@ -298,24 +314,26 @@ class _ClientsViewState extends State<ClientsView> {
     );
   }
 
-  Widget _buildDetailedTable(Map<String, dynamic> simulation) {
-    final hourData = simulation['hourlyDetails'] as List<Map<String, dynamic>>? ?? [];
+Widget _buildDetailedTable(Map<String, dynamic> simulation) {
+  final hourData = simulation['hourlyDetails'] as List<Map<String, dynamic>>? ?? [];
 
-    //imprimir hourData:
-    print("===========================");
-    print(hourData);
-print("===========================");
+  print("===========================");
+  print(hourData);
+  print("===========================");
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: SingleChildScrollView(
+      scrollDirection: Axis.vertical,
       child: DataTable(
+        columnSpacing: 20.0, // Ajusta el espacio entre columnas si es necesario
         columns: [
-          DataColumn(label: Text('Hora')),
-          DataColumn(label: Text('Clientes')),
-          DataColumn(label: Text('Compras')),
-          DataColumn(label: Text('Cantidad de Clientes')),
-          DataColumn(label: Text('Cantidad de Ventas')),
-          DataColumn(label: Text('Ganancia Neta')),
+          DataColumn(label: Text('Hora', style: TextStyle(fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('Clientes', style: TextStyle(fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('Compras', style: TextStyle(fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('Cantidad de Clientes', style: TextStyle(fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('Cantidad de Ventas', style: TextStyle(fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('Ganancia Neta', style: TextStyle(fontWeight: FontWeight.bold))),
         ],
         rows: hourData.map((data) {
           return DataRow(cells: [
@@ -328,8 +346,10 @@ print("===========================");
           ]);
         }).toList(),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget _buildInputField(
       String label, TextEditingController controller, String hintText) {

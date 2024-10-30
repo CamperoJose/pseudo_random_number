@@ -68,6 +68,7 @@ class ClientsBL {
 
     int accumulatedClients = 0;
     int accumulatedPurchases = 0;
+    double netProfit = 0;
 
     for (int hour = 1; hour <= hoursOpen; hour++) {
       // simular clientsThisHour con una distribiucion uniforme 2 +-2:
@@ -119,6 +120,8 @@ class ClientsBL {
         // en cas
       }
 
+      netProfit = netProfit + purchasesThisHour;
+
       double revenueThisHour = purchasesThisHour * articlePrice;
       double variableCostThisHour = purchasesThisHour * articleCost;
       netProfitThisHour =
@@ -126,7 +129,7 @@ class ClientsBL {
 
       accumulatedClients += clientsThisHour;
       accumulatedPurchases += purchasesThisHour;
-      totalNetProfit += netProfitThisHour;
+      
       totalClients += clientsThisHour;
       totalPurchases += purchasesThisHour;
 
@@ -139,6 +142,8 @@ class ClientsBL {
         'profit': netProfitThisHour,
       });
     }
+
+    totalNetProfit += netProfitThisHour;
 
     return {
       'totalClients': totalClients,
