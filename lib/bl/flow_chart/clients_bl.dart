@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:pseudo_random_number/bl/flow_chart/maximize_problem_bl.dart';
+
 class ClientsBL {
   final List<Map<String, dynamic>> allSimulations = [];
   final Map<String, dynamic> avgStats = {};
@@ -10,6 +12,10 @@ class ClientsBL {
     required double articleCost,
     required double articlePrice,
     required int hoursOpen,
+    required double art1,
+    required double art2,
+    required double art3,
+    required double art4,
   }) async {
     allSimulations.clear();
     double totalNetProfit = 0;
@@ -22,6 +28,10 @@ class ClientsBL {
         articleCost: articleCost,
         articlePrice: articlePrice,
         hoursOpen: hoursOpen,
+        art1: art1,
+        art2: art2,
+        art3: art3,
+        art4: art4,
       );
 
       totalNetProfit += simulationResults['totalNetProfit'];
@@ -31,9 +41,12 @@ class ClientsBL {
       allSimulations.add(simulationResults);
     }
 
-    avgStats['netProfitAvg'] = (totalNetProfit / numSimulations).toStringAsFixed(2);
-    avgStats['avgClientsPerDay'] = (totalClients / numSimulations).toStringAsFixed(2);
-    avgStats['avgPurchasesPerDay'] = (totalPurchases / numSimulations).toStringAsFixed(2);
+    avgStats['netProfitAvg'] =
+        (totalNetProfit / numSimulations).toStringAsFixed(2);
+    avgStats['avgClientsPerDay'] =
+        (totalClients / numSimulations).toStringAsFixed(2);
+    avgStats['avgPurchasesPerDay'] =
+        (totalPurchases / numSimulations).toStringAsFixed(2);
   }
 
   Map<String, dynamic> _simulateSingleDay({
@@ -41,33 +54,75 @@ class ClientsBL {
     required double articleCost,
     required double articlePrice,
     required int hoursOpen,
+    required double art1,
+    required double art2,
+    required double art3,
+    required double art4,
   }) {
     final rng = Random();
     double totalNetProfit = 0;
     int totalClients = 0;
     int totalPurchases = 0;
     List<Map<String, dynamic>> hourDetails = [];
+    double netProfitThisHour = -fixedCost;
 
     int accumulatedClients = 0;
     int accumulatedPurchases = 0;
 
     for (int hour = 1; hour <= hoursOpen; hour++) {
-      int clientsThisHour = rng.nextInt(20) + 5;
+      // simular clientsThisHour con una distribiucion uniforme 2 +-2:
+      double clientPurchasesRND = rng.nextDouble();
+
+      int clientsThisHour = roundDouble(4 - (4 - 0) * clientPurchasesRND);
+
       List<int> purchasesPerClient = [];
       int purchasesThisHour = 0;
 
       for (int j = 0; j < clientsThisHour; j++) {
-        int clientPurchases = rng.nextInt(3); // entre 0 y 2 compras por cliente
+        // generar variable aleatoria entre 0 y 1 con decimales:
+        double clientPurchasesRND = rng.nextDouble();
+
+        //mostrar valor random de cada cliente:
+        print("=====");
+        print(clientPurchasesRND);
+        print("=====");
+
+        int clientPurchases = 0;
+
+        // estandarizando los rangios de los articulos:
+        double rng0 = 0;
+        double rng1 = art1;
+        double rng2 = rng0 + rng1;
+        double rng3 = rng2 + art2;
+        double rng4 = rng3 + art3;
+        double rng5 = rng4 + art4;
+
+        if (clientPurchasesRND >= rng0 && clientPurchasesRND <= rng1) {
+          //print:
+
+          clientPurchases = 0;
+        } else if (clientPurchasesRND > rng1 && clientPurchasesRND <= rng2) {
+          //print:
+
+          clientPurchases = 1;
+        } else if (clientPurchasesRND > rng3 && clientPurchasesRND <= rng4) {
+          clientPurchases = 2;
+        } else if (clientPurchasesRND > rng4 && clientPurchasesRND <= rng5) {
+          clientPurchases = 3;
+        }
+
+        purchasesPerClient.add(clientPurchases);
         if (clientPurchases > 0) {
-          purchasesPerClient.add(clientPurchases);
           purchasesThisHour += clientPurchases;
         }
+
+        // en cas
       }
 
       double revenueThisHour = purchasesThisHour * articlePrice;
       double variableCostThisHour = purchasesThisHour * articleCost;
-      double totalCostThisHour = (fixedCost / hoursOpen) + variableCostThisHour;
-      double netProfitThisHour = revenueThisHour - totalCostThisHour;
+      netProfitThisHour =
+          netProfitThisHour + purchasesThisHour * (articlePrice - articleCost);
 
       accumulatedClients += clientsThisHour;
       accumulatedPurchases += purchasesThisHour;

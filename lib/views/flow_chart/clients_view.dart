@@ -14,6 +14,16 @@ class _ClientsViewState extends State<ClientsView> {
   final TextEditingController _articlePriceController = TextEditingController();
   final TextEditingController _hoursOpenController = TextEditingController();
 
+  final TextEditingController _art1 = TextEditingController();
+  final TextEditingController _art2 = TextEditingController();
+  final TextEditingController _art3 = TextEditingController();
+  final TextEditingController _art4 = TextEditingController();
+
+
+
+
+
+
   ClientsBL clientsBL = ClientsBL();
   int selectedSimulationIndex = 0;
   bool isLoading = false;
@@ -30,6 +40,10 @@ class _ClientsViewState extends State<ClientsView> {
         articleCost: double.parse(_articleCostController.text),
         articlePrice: double.parse(_articlePriceController.text),
         hoursOpen: int.parse(_hoursOpenController.text),
+        art1: double.parse(_art1.text),
+        art2: double.parse(_art2.text),
+        art3: double.parse(_art3.text),
+        art4: double.parse(_art4.text),
       );
 
       setState(() {
@@ -133,6 +147,23 @@ class _ClientsViewState extends State<ClientsView> {
           _buildInputField(
               'Horas que Atiende por Día', _hoursOpenController, 'Ej: 8'),
           SizedBox(height: 20),
+
+          //Tabla con inputs de probabilidad de compra por cliente:
+          Text(
+            'Probabilidad de Compra por Cliente',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+
+          _buildInputField(
+              'Artículo 1', _art1, 'Ej: 0.2'),
+          _buildInputField(
+              'Artículo 2', _art2, 'Ej: 0.3'),
+          _buildInputField(
+              'Artículo 3', _art3, 'Ej: 0.4'),
+          _buildInputField(
+              'Artículo 4', _art4, 'Ej: 0.1'),
+
+
           Row(
             children: [
               Expanded(
@@ -282,7 +313,9 @@ print("===========================");
           DataColumn(label: Text('Hora')),
           DataColumn(label: Text('Clientes')),
           DataColumn(label: Text('Compras')),
-          DataColumn(label: Text('Ganancia')),
+          DataColumn(label: Text('Cantidad de Clientes')),
+          DataColumn(label: Text('Cantidad de Ventas')),
+          DataColumn(label: Text('Ganancia Neta')),
         ],
         rows: hourData.map((data) {
           return DataRow(cells: [
@@ -290,6 +323,8 @@ print("===========================");
             DataCell(Text('${data['clients']}')),
             DataCell(Text('${data['purchasesPerClient']}')),
             DataCell(Text('${data['accumulatedClients']}')),
+            DataCell(Text('${data['accumulatedPurchases']}')),
+            DataCell(Text('${data['profit']}')),
           ]);
         }).toList(),
       ),
