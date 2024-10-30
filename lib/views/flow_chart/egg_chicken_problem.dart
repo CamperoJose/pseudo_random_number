@@ -10,10 +10,11 @@ class EggSimulation extends StatefulWidget {
 
 class _EggSimulationState extends State<EggSimulation> {
   // Controladores para los inputs
-  final TextEditingController _simulationsController = TextEditingController(text: '1');
-  final TextEditingController _daysController = TextEditingController(text: '100');
-  final TextEditingController _eggProfitController = TextEditingController(text: '1.2');
-  final TextEditingController _chickenProfitController = TextEditingController(text: '30');
+  final TextEditingController _simulationsController = TextEditingController();
+  final TextEditingController _daysController = TextEditingController();
+  final TextEditingController _eggProfitController = TextEditingController();
+  final TextEditingController _chickenProfitController =
+      TextEditingController();
 
   // Resultados por simulación
   List<Map<String, dynamic>> simulationResults = [];
@@ -43,12 +44,20 @@ class _EggSimulationState extends State<EggSimulation> {
     });
   }
 
+  void clearInputs() {
+    _simulationsController.clear();
+    _daysController.clear();
+    _eggProfitController.clear();
+    _chickenProfitController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Simulación de Producción de Pollos y Huevos'),
+        title: const Text('🐣 Simulación de Huevos y Pollos 🐔', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF232635),
+          iconTheme: IconThemeData(color: Colors.white), // Cambia el color del botón de ir atrás a blanco
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -75,22 +84,46 @@ class _EggSimulationState extends State<EggSimulation> {
                   children: [
                     const Text(
                       'Parámetros de Simulación',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                     const SizedBox(height: 10),
-                    _buildInputField('Cantidad de Simulaciones', _simulationsController),
-                    _buildInputField('Cantidad de Días por Simulación', _daysController),
-                    _buildInputField('Ganancia por Huevo (Bs)', _eggProfitController),
-                    _buildInputField('Ganancia por Pollo (Bs)', _chickenProfitController),
+                    _buildInputField('Cantidad de Simulaciones',
+                        _simulationsController, 'Ej: 30'),
+                    _buildInputField('Cantidad de Días por Simulación',
+                        _daysController, 'Ej: 28'),
+                    _buildInputField('Ganancia por Huevo (Bs)',
+                        _eggProfitController, 'Ej: 1.2'),
+                    _buildInputField('Ganancia por Pollo (Bs)',
+                        _chickenProfitController, 'Ej: 30'),
                     const SizedBox(height: 20),
-                    ElevatedButton.icon(
-                      onPressed: calculateSimulations,
-                      icon: const Icon(Icons.calculate),
-                      label: const Text('Calcular Simulaciones'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                        backgroundColor: const Color(0xFF6C63FF),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: calculateSimulations,
+                          icon:
+                              const Icon(Icons.calculate, color: Colors.white),
+                          label: const Text('Calcular',
+                              style: TextStyle(color: Colors.white)),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
+                            backgroundColor: const Color(0xFF6C63FF),
+                          ),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: clearInputs,
+                          icon: const Icon(Icons.clear, color: Colors.white),
+                          label: const Text('Limpiar',
+                              style: TextStyle(color: Colors.white)),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
+                            backgroundColor: Colors.redAccent,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -104,17 +137,22 @@ class _EggSimulationState extends State<EggSimulation> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Resultados Totales de Simulaciones',
+                    '📊 Resultados Totales de Simulaciones',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 10),
-                  if (avgNetGain != null) Text('Ganancia Neta Promedio: $avgNetGain Bs'),
-                  if (avgEggs != null) Text('Promedio de Huevos por Simulación: $avgEggs'),
-                  if (avgChickensAlive != null) Text('Promedio de Pollos Vivos: $avgChickensAlive'),
-                  if (avgChickensDead != null) Text('Promedio de Pollos Muertos: $avgChickensDead'),
+if (avgNetGain != null)
+  Text('💰 Ganancia Neta Promedio: ${avgNetGain!.toStringAsFixed(2)} Bs'),
+if (avgEggs != null)
+  Text('🥚 Promedio de Huevos Puestos: ${avgEggs!.toStringAsFixed(2)}'),
+if (avgChickensAlive != null)
+  Text('🐔 Promedio Pollos Vivos: ${avgChickensAlive!.toStringAsFixed(2)}'),
+if (avgChickensDead != null)
+  Text('💀 Promedio Pollos Muertos: ${avgChickensDead!.toStringAsFixed(2)}'),
+
                   const SizedBox(height: 20),
                   const Text(
-                    'Resultados Individuales por Simulación',
+                    '🔍 Resultados Individuales por Simulación',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 10),
@@ -122,40 +160,49 @@ class _EggSimulationState extends State<EggSimulation> {
                   const SizedBox(height: 20),
                   if (simulationResults.isNotEmpty)
                     const Text(
-                      'Detalles de la Simulación Seleccionada',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      '📅 Detalles de la Simulación Seleccionada',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   const SizedBox(height: 10),
                   if (simulationResults.isNotEmpty)
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: simulationResults[selectedSimulation]['dias'].length,
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 1.0,
+                        ),
+                        itemCount: simulationResults[selectedSimulation]['dias']
+                            .length,
                         itemBuilder: (context, index) {
-                          var dayResult = simulationResults[selectedSimulation]['dias'][index];
+                          var dayResult = simulationResults[selectedSimulation]
+                              ['dias'][index];
                           return Card(
-                            margin: const EdgeInsets.symmetric(vertical: 8.0),
-                            elevation: 4,
+                            color: Colors.lightGreen[200],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(12.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Día ${dayResult['dia']}',
+                                    '📅 Día ${dayResult['dia']}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: Colors.blueAccent,
+                                      fontSize: 14,
+                                      color: Colors.green,
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: 8),
                                   _buildDetailRow(
                                     'Huevos:',
                                     '${dayResult['huevos']}',
-                                    Icons.egg_alt,
+                                    Icons.egg,
                                     Colors.orange,
                                   ),
                                   _buildDetailRow(
@@ -193,7 +240,8 @@ class _EggSimulationState extends State<EggSimulation> {
   }
 
   // Campo de texto para los parámetros de simulación
-  Widget _buildInputField(String label, TextEditingController controller) {
+  Widget _buildInputField(
+      String label, TextEditingController controller, String hintText) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
@@ -201,7 +249,9 @@ class _EggSimulationState extends State<EggSimulation> {
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: label,
+          hintText: hintText,
           border: const OutlineInputBorder(),
+          suffixIcon: const Icon(Icons.edit),
         ),
       ),
     );
@@ -226,19 +276,17 @@ class _EggSimulationState extends State<EggSimulation> {
   }
 
   // Función para construir una fila de detalle de simulación
-  Widget _buildDetailRow(String label, String value, IconData icon, Color iconColor) {
+  Widget _buildDetailRow(
+      String label, String value, IconData icon, Color iconColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: [
           Icon(icon, color: iconColor),
-          const SizedBox(width: 10),
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          const SizedBox(width: 8),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
           const Spacer(),
-          Text(value),
+          Text(value, style: const TextStyle(fontSize: 16)),
         ],
       ),
     );

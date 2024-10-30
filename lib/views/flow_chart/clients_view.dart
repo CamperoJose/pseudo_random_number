@@ -137,15 +137,15 @@ class _ClientsViewState extends State<ClientsView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInputField(
-              'Número de Simulaciones', _numSimulationsController, 'Ej: 100'),
+              'Número de Simulaciones', _numSimulationsController, 'Ej: 30'),
           _buildInputField(
-              'Costos Fijos por Día (Bs)', _fixedCostController, 'Ej: 500.00'),
+              'Costos Fijos por Día (Bs)', _fixedCostController, 'Ej: 300.00'),
           _buildInputField(
-              'Costo por Artículo (Bs)', _articleCostController, 'Ej: 20.00'),
+              'Costo por Artículo (Bs)', _articleCostController, 'Ej: 50.00'),
           _buildInputField('Precio de Venta por Artículo (Bs)',
-              _articlePriceController, 'Ej: 30.00'),
+              _articlePriceController, 'Ej: 75.00'),
           _buildInputField(
-              'Horas que Atiende por Día', _hoursOpenController, 'Ej: 8'),
+              'Horas que Atiende por Día', _hoursOpenController, 'Ej: 10'),
           SizedBox(height: 20),
 
           //Tabla con inputs de probabilidad de compra por cliente:

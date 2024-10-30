@@ -19,6 +19,7 @@ Map<String, dynamic> calculateEggChickenSimulations(
       // Simulación de la cantidad de huevos (CHG)
       double rCHG = Random().nextDouble();
       int CHG = calculateEggQ(rCHG); // Huevos en este día que puso la gallina
+      print(CHG);
       int CHPD = 0;
       int CPVPP = 0;
       int CPMPP = 0;
@@ -42,6 +43,9 @@ Map<String, dynamic> calculateEggChickenSimulations(
           CHPD += 1;
         }
       }
+      print(CHG);
+
+      totalEggs += CHG;
 
       // Registrar los resultados de este día
       daysResults.add({
@@ -58,9 +62,11 @@ Map<String, dynamic> calculateEggChickenSimulations(
     double gainChickens = CTPV * chickenProfit;
     double netGain = gainEggs + gainChickens;
 
+    
+
     // Acumular resultados generales
     totalNetGain += netGain;
-    totalEggs += CTH;
+    
     totalChickensAlive += CTPV;
     totalChickensDead += CTPM;
 
