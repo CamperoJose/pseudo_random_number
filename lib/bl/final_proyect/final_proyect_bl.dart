@@ -98,7 +98,7 @@ class PasteleriaBL {
       'SPG': SPG,
     });
 
-    while (CD <= D + 1) {
+    while (CD <= D ) {
       //LLEGADA DE PASTELES ORDENADOS
 
       if (EP == true && DRE == 1) {
@@ -260,7 +260,7 @@ class PasteleriaBL {
       }
 
       simulationData.add({
-        'day after': CD,
+        'day': CD,
         'DPP': DPP,
         'DPM': DPM,
         'DPG': DPG,
@@ -270,19 +270,15 @@ class PasteleriaBL {
         'SPPP': SPPP,
         'SPPM': SPPM,
         'SPPG': SPPG,
-        'STOCK': SPP + SPM + SPG + SPPP + SPPG,
         'CPP': CPP,
         'CPM': CPM,
         'CPG': CPG,
         'DESPP': DESPP,
         'DESPM': DESPM,
         'DESPG': DESPG,
-        'CVS': CVS,
-        'CVSP': CVSP,
         'DIPP': DIPP,
         'DIPM': DIPM,
         'DIPG': DIPG,
-        'CO': CO,
         'CT': CT,
       });
 
@@ -292,7 +288,21 @@ class PasteleriaBL {
     GN = ( -CT + CPP * PVPP + CPM * PVPM + CPG * PVPG) as int;
 
     simulationData.add({
-      'GN': GN,
+      'final_data_to_avg': true,
+
+        'Cantidad pasteles pequeños en stock': SPP+SPPP,// Cantidad pasteles pequeños en stock
+        'Cantidad pasteles medianos en stock': SPM + SPPM,// Cantidad pasteles medianos en stock
+        'Cantidad pasteles grandes en stock': SPG + SPPG,// Cantidad pasteles grandes en stock
+        'Cantidad pasteles pequeños vendidos': CPP, // Cantidad pasteles pequeños vendidos
+        'Cantidad pasteles medianos vendidos': CPM,// Cantidad pasteles medianos vendidos
+        'Cantidad pasteles grandes vendidos': CPG,// Cantidad pasteles grandes vendidos
+        'Cantidad pasteles pequeños deshechados': DESPP, // Cantidad pasteles pequeños deshechados
+        'Cantidad pasteles medianos deshechados': DESPM,// Cantidad pasteles medianos deshechados
+        'Cantidad pasteles grandes deshechados': DESPG,// Cantidad pasteles grandes deshechados
+        'Demanda insatisfecha Pastel pequeño': DIPP, // Demanda insatisfecha Pastel pequeño
+        'Demanda insatisfecha Pastel mediano': DIPM,// Demanda insatisfecha Pastel mediano
+        'Demanda insatisfecha Pastel grande': DIPG,// Demanda insatisfecha Pastel grande
+      'Ganancia Neta mensual': GN, //ganancia mensual
     });
 
     return simulationData;

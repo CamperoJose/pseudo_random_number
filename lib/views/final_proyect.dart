@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_random_number/bl/final_proyect/final_proyect_bl.dart';
+import 'seccion_variables.dart';
+import 'seccion_ordenes_produccion.dart';
 
 class BakeryProject extends StatefulWidget {
   @override
@@ -33,9 +35,10 @@ class _BakeryProjectState extends State<BakeryProject> {
     ],
   };
 
-  // Variables editables
   final TextEditingController _cantidadSimulacionesController =
       TextEditingController(text: "50");
+  final TextEditingController _numeroSimulacionesController =
+      TextEditingController(text: "1");
 
   final Map<String, TextEditingController> _controladoresOrdenes = {
     "lunespequeño": TextEditingController(text: "12"),
@@ -50,6 +53,32 @@ class _BakeryProjectState extends State<BakeryProject> {
   };
 
   final PasteleriaBL pasteleriaBL = PasteleriaBL();
+  List<List<Map<String, dynamic>>> simulaciones = [];
+  int simulacionSeleccionada = 0;
+  bool data_init = false;
+
+  Map<String, double> calcularPromedios() {
+    if (simulaciones.isEmpty) return {};
+
+    Map<String, double> sumas = {};
+    int totalSimulaciones = simulaciones.length;
+
+    for (var simulacion in simulaciones) {
+      var ultimoRegistro = simulacion.lastWhere(
+        (registro) => registro['final_data_to_avg'] == true,
+        orElse: () => {},
+      );
+      if (ultimoRegistro.isNotEmpty) {
+        ultimoRegistro.forEach((key, value) {
+          if (key != 'final_data_to_avg' && value is num) {
+            sumas[key] = (sumas[key] ?? 0) + value.toDouble();
+          }
+        });
+      }
+    }
+
+    return sumas.map((key, value) => MapEntry(key, value / totalSimulaciones));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +106,35 @@ class _BakeryProjectState extends State<BakeryProject> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(flex: 2, child: _seccionVariables()),
+                    Expanded(
+                      flex: 2,
+                      child: SeccionVariables(
+                        diasDelMes: diasDelMes,
+                        vidaUtilPasteles: vidaUtilPasteles,
+                        diasEntregaProveedor: diasEntregaProveedor,
+                        precioPastelPequeno: precioPastelPequeno,
+                        precioPastelMediano: precioPastelMediano,
+                        precioPastelGrande: precioPastelGrande,
+                        costosAdquisicion: costosAdquisicion,
+                      ),
+                    ),
                     const SizedBox(width: 16),
-                    Expanded(flex: 1, child: _seccionOrdenesProduccion()),
+                    Expanded(
+                      flex: 1,
+                      child: SeccionOrdenesProduccion(
+                        controladoresOrdenes: _controladoresOrdenes,
+                      ),
+                    ),
                   ],
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _numeroSimulacionesController,
+                  decoration: InputDecoration(
+                    labelText: "Número de Simulaciones",
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -92,37 +146,33 @@ class _BakeryProjectState extends State<BakeryProject> {
                       } catch (e) {
                         print(
                             'Error parsing ${entry.key}: ${entry.value.text}');
-                        return 0; // Valor predeterminado en caso de error
+                        return 0;
                       }
                     }).toList();
 
-                    print("boton pressed");
-                    List<Map<String, dynamic>> data =
-                        pasteleriaBL.PasteleriaSimulacion(
-                      diasDelMes,
-                      precioPastelPequeno,
-                      precioPastelMediano,
-                      precioPastelGrande,
-                      diasEntregaProveedor,
-                      vidaUtilPasteles,
-                      costosAdquisicion,
-                      int.parse(_cantidadSimulacionesController.value.text),
-                      detalleOrdenes,
-                    );
+                    int numeroSimulaciones = int.parse(
+                        _numeroSimulacionesController.value.text);
+                    List<List<Map<String, dynamic>>> nuevosResultados = [];
 
-                    bool a = false;
-                    for (var registro in data) {
-                      print(registro.entries
-                          .map((entry) => '${entry.key}: ${entry.value}')
-                          .join(', '));
-
-                      // if (a == true) {
-                      //   print(" ");
-                      //   a = false;
-                      // } else {
-                      //   a = true;
-                      // }
+                    for (int i = 0; i < numeroSimulaciones; i++) {
+                      nuevosResultados.add(pasteleriaBL.PasteleriaSimulacion(
+                        diasDelMes,
+                        precioPastelPequeno,
+                        precioPastelMediano,
+                        precioPastelGrande,
+                        diasEntregaProveedor,
+                        vidaUtilPasteles,
+                        costosAdquisicion,
+                        int.parse(_cantidadSimulacionesController.value.text),
+                        detalleOrdenes,
+                      ));
                     }
+
+                    setState(() {
+                      simulaciones = nuevosResultados;
+                      simulacionSeleccionada = 0;
+                      data_init = true;
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 34, 158, 9),
@@ -139,7 +189,42 @@ class _BakeryProjectState extends State<BakeryProject> {
                   ),
                 ),
                 const Divider(color: Colors.grey, thickness: 4),
-                _seccionResultados(),
+                if (data_init)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: _tablaPromedios(calcularPromedios()),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            DropdownButton<int>(
+                              value: simulacionSeleccionada,
+                              items: List.generate(
+                                simulaciones.length,
+                                (index) => DropdownMenuItem(
+                                  value: index,
+                                  child: Text("Simulación ${index + 1}"),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  simulacionSeleccionada = value!;
+                                });
+                              },
+                            ),
+                            _seccionResultados(
+                                simulaciones[simulacionSeleccionada]),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -148,210 +233,152 @@ class _BakeryProjectState extends State<BakeryProject> {
     );
   }
 
-  Widget _seccionVariables() {
+  Widget _tablaPromedios(Map<String, double> promedios) {
+    if (promedios.isEmpty) {
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Text(
+              'No hay datos para promediar.',
+              style: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey.shade700),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _titulo('Variables Constantes'),
-            _listaVariables(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _seccionOrdenesProduccion() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _titulo('Órdenes al Proveedor'),
-            _matrizOrdenes(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _seccionResultados() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Text(
-            'Resultados aparecerán aquí.',
-            style: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-                color: Colors.grey.shade700),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _titulo(String texto) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Text(
-        texto,
-        style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.blueGrey.shade800),
-      ),
-    );
-  }
-
-  Widget _listaVariables() {
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _infoVariable(
-                      'Días del Mes', '${diasDelMes.toString()} días'),
-                  _infoVariable(
-                      'Vida Útil de los Pasteles', '$vidaUtilPasteles días'),
-                  _infoVariable('Días de Entrega del Proveedor',
-                      '$diasEntregaProveedor días'),
-                  _infoVariable('Precio de Venta Pastel Pequeño',
-                      '$precioPastelPequeno Bs'),
-                  _infoVariable('Precio de Venta Pastel Mediano',
-                      '$precioPastelMediano Bs'),
-                  _infoVariable('Precio de Venta Pastel Grande',
-                      '$precioPastelGrande Bs'),
-                ],
-              ),
+            Text(
+              'Promedios de Simulaciones',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _infoCostosAdquisicion(
-                      'Costos Pastel Pequeño', costosAdquisicion['pequeno']!),
-                  _infoCostosAdquisicion(
-                      'Costos Pastel Mediano', costosAdquisicion['mediano']!),
-                  _infoCostosAdquisicion(
-                      'Costos Pastel Grande', costosAdquisicion['grande']!),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _infoVariable(String etiqueta, String valor) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(etiqueta,
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(valor,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: Colors.black)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _infoCostosAdquisicion(
-      String tipo, List<Map<String, dynamic>> costos) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(tipo,
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueGrey.shade700)),
-        ...costos.map((costo) {
-          return Text(
-            '${costo['rango']}: ${costo['precio']} Bs',
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
-          );
-        }).toList(),
-      ],
-    );
-  }
-
-  Widget _matrizOrdenes() {
-    List<String> dias = ['Lunes', 'Jueves', 'Sábado'];
-    List<String> tipos = ['Pequeño', 'Mediano', 'Grande'];
-
-    return Table(
-      border: TableBorder.all(color: Colors.grey.shade400),
-      columnWidths: const {
-        0: FractionColumnWidth(0.3),
-        1: FractionColumnWidth(0.35),
-        2: FractionColumnWidth(0.35),
-      },
-      children: [
-        TableRow(
-          children: dias.map((dia) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                dia,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueGrey.shade700),
-              ),
-            );
-          }).toList(),
-        ),
-        for (var tipo in tipos)
-          TableRow(
-            children: dias.map((dia) {
-              String clave =
-                  '${dia.toLowerCase().replaceAll('á', 'a')}${tipo.toLowerCase().replaceAll('é', 'e')}';
-
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _controladoresOrdenes[clave],
-                  decoration: InputDecoration(
-                    labelText: '$tipo',
-                    labelStyle: TextStyle(fontSize: 12),
-                    border: OutlineInputBorder(),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+            const SizedBox(height: 10),
+            DataTable(
+              columns: [
+                DataColumn(
+                  label: Text(
+                    'Métrica',
+                    style: TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(fontSize: 14),
                 ),
-              );
-            }).toList(),
+                DataColumn(
+                  label: Text(
+                    'Promedio',
+                    style: TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+              rows: promedios.entries
+                  .map(
+                    (entry) => DataRow(
+                      cells: [
+                        DataCell(Text(entry.key)),
+                        DataCell(Text(entry.value.toStringAsFixed(2))),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _seccionResultados(List<Map<String, dynamic>> data) {
+    List<Map<String, dynamic>> registrosFiltrados =
+        data.where((registro) => registro.containsKey('day')).toList();
+
+    if (registrosFiltrados.isEmpty) {
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Text(
+              'No hay resultados para mostrar.',
+              style: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey.shade700),
+            ),
           ),
-      ],
+        ),
+      );
+    }
+
+    List<String> columnas = registrosFiltrados.first.keys.toList();
+
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Resultados',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: 300,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: columnas
+                        .map((columna) => DataColumn(
+                              label: Text(
+                                columna,
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                        .toList(),
+                    rows: registrosFiltrados
+                        .map((registro) => DataRow(
+                              cells: columnas
+                                  .map((columna) => DataCell(
+                                        Text(
+                                          registro[columna]?.toString() ?? '',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ))
+                        .toList(),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
