@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pseudo_random_number/views/final_proyect.dart';
 import 'package:pseudo_random_number/views/flow_chart/clients_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/craps_view.dart';
 import 'package:pseudo_random_number/views/flow_chart/dpf_view.dart';
@@ -9,6 +10,8 @@ import 'package:pseudo_random_number/views/method_one.dart';
 import 'package:pseudo_random_number/views/method_three.dart';
 import 'package:pseudo_random_number/views/method_two.dart';
 import 'package:pseudo_random_number/views/flow_chart/maximize_problem.dart';
+
+import 'flow_chart/sugar_view.dart';
 
 
 class WelcomePage extends StatelessWidget {
@@ -363,7 +366,23 @@ Widget _buildMethodsColumn2(BuildContext context) {
         context,
         'Problema de Huevos y Pollos',
         const EggSimulation(),
-        const Color.fromARGB(255, 89, 160, 53), // Azul Profundo
+        const Color.fromARGB(255, 203, 117, 214), // Azul Profundo
+      ),
+
+      const SizedBox(height: 10.0),
+      _buildButton(
+        context,
+        'Demanda y Pedido de Azucar',
+        SugarView(),
+        const Color.fromARGB(255, 90, 173, 178), // Azul Profundo
+      ),
+
+      const SizedBox(height: 10.0),
+      _buildButton(
+        context,
+        'PROYECTO FINAL - PASTELERIA EMANUELS',
+        BakeryProject(),
+        const Color.fromARGB(255, 73, 170, 9), // Azul Profundo
       ),
 
     ],
